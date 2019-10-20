@@ -1,10 +1,12 @@
 import { GlobalStyle } from './global.styles';
+import Header from './common/components/header/header.component';
 import React from 'react';
 
 function App() {
 	return (
 		<div>
 			<GlobalStyle />
+			<Header />
 
 			<h1>Wallafree</h1>
 			<p>
