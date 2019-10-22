@@ -41,6 +41,19 @@ export const OptionsContainer = styled.div`
 	@media screen and (max-width: 800px) {
 		width: 80%;
 	}
+	
+	.thing {
+		background-color: #ffde17;
+		color: black;
+		font-weight: bold;
+		transition: .2s ease-in-out,padding;
+		border-radius: 25px;
+
+		&:hover {
+		  background-color: #e6c300;
+		  border: none;
+		}
+	}
 `;
 
 export const OptionLink = styled(Link)`

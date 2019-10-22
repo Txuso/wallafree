@@ -9,10 +9,10 @@ const Header = () => (
 			<img src={Logo} className="logo" alt="" />
 		</LogoContainer>
 		<OptionsContainer>
-			<OptionLink to="/shop">SHOP</OptionLink>
-			<OptionLink to="/contact">CONTACT</OptionLink>
-			<OptionLink to="/shop">CHAT</OptionLink>
+			<OptionLink to="/chat">CHAT</OptionLink>
+			<OptionLink to="/profile">MY PROFILE</OptionLink>
 			<OptionLink to="/signin">SIGN IN</OptionLink>
+			<OptionLink className="thing" to="/upload">UPLOAD THING</OptionLink>
 		</OptionsContainer>
 	</HeaderContainer>
 );

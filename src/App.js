@@ -1,24 +1,26 @@
+import { Route, Switch } from 'react-router-dom';
+
+import ChatPage from './pages/chat/chat.component';
 import { GlobalStyle } from './global.styles';
 import Header from './common/components/header/header.component';
+import HomePage from './pages/homepage/homepage.component';
+import MyProfilePage from './pages/myprofile/myprofile.component';
 import React from 'react';
+import SignInSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.component';
+import UploadThingPage from './pages/upload-thing/upload-thing.component';
 
 function App() {
 	return (
 		<div>
 			<GlobalStyle />
 			<Header />
-
-			<h1>Wallafree</h1>
-			<p>
-				Compiled successfully! You can now view create-react-app in the
-				browser. Local: http://localhost:3000/ On Your Network:
-				http://192.168.1.33:3000/ Note that the development build is not
-				optimized. To create a production build, use yarn build.
-				Compiled successfully! You can now view create-react-app in the
-				browser. Local: http://localhost:3000/ On Your Network:
-				http://192.168.1.33:3000/ Note that the development build is not
-				optimized. To create a production build, use yarn build.
-			</p>
+			<Switch>
+				<Route exact path="/" component={HomePage} />
+				<Route exact path="/chat" component={ChatPage} />
+				<Route path="/profile" component={MyProfilePage} />
+				<Route exact path="/signin" component={SignInSignUpPage}/>
+				<Route exact path="/upload" component={UploadThingPage}/>
+			</Switch>
 		</div>
 	);
 }
