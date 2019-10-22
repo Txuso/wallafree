@@ -33,7 +33,7 @@ export const LogoContainer = styled(Link)`
 
 export const OptionsContainer = styled.div`
 	display: flex;
-	width: 50%;
+	width: 60%;
 	height: 100%;
 	align-items: center;
 	justify-content: flex-end;
@@ -48,6 +48,11 @@ export const OptionsContainer = styled.div`
 		font-weight: bold;
 		transition: .2s ease-in-out,padding;
 		border-radius: 25px;
+		text-align: center;
+
+		@media screen and (max-width: 800px) {
+			padding: 4px;
+		}
 
 		&:hover {
 		  background-color: #e6c300;
