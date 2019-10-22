@@ -44,7 +44,7 @@ export const OptionsContainer = styled.div`
 	
 	.thing {
 		background-color: #ffde17;
-		color: black;
+		color: white;
 		font-weight: bold;
 		transition: .2s ease-in-out,padding;
 		border-radius: 25px;
