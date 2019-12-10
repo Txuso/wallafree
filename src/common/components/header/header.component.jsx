@@ -12,7 +12,9 @@ const Header = () => (
 			<OptionLink to="/chat">CHAT</OptionLink>
 			<OptionLink to="/profile">MY PROFILE</OptionLink>
 			<OptionLink to="/signin">SIGN IN</OptionLink>
-			<OptionLink className="thing" to="/upload">UPLOAD THING</OptionLink>
+			<OptionLink className="thing" to="/upload">
+				UPLOAD THING
+			</OptionLink>
 		</OptionsContainer>
 	</HeaderContainer>
 );

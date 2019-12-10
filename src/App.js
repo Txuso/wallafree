@@ -18,8 +18,8 @@ function App() {
 				<Route exact path="/" component={HomePage} />
 				<Route exact path="/chat" component={ChatPage} />
 				<Route path="/profile" component={MyProfilePage} />
-				<Route exact path="/signin" component={SignInSignUpPage}/>
-				<Route exact path="/upload" component={UploadThingPage}/>
+				<Route exact path="/signin" component={SignInSignUpPage} />
+				<Route exact path="/upload" component={UploadThingPage} />
 			</Switch>
 		</div>
 	);
