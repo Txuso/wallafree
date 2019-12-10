@@ -26,6 +26,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				error: action.payload.error
 			};
+		case UserActionTypes.RESET_ERROR:
+			return {
+				...state,
+				error: null
+			};
 		default:
 			return state;
 	}

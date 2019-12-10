@@ -1,13 +1,16 @@
 import './sign-up.component.scss';
 
-import { CustomButton, FormInput } from '../../../../common/components/index.js';
+import {
+	CustomButton,
+	FormInput
+} from '../../../../common/components/index.js';
 import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import { signUpStart } from '../../../../redux/user/user.actions';
 
 const SignUp = ({ signUpStart }) => {
-	const [ userCredentials, setUserCredentials ] = useState({
+	const [userCredentials, setUserCredentials] = useState({
 		displayName: '',
 		email: '',
 		password: '',
@@ -15,7 +18,7 @@ const SignUp = ({ signUpStart }) => {
 	});
 
 	const { displayName, email, password, confirmPassword } = userCredentials;
-	const handleSubmit = async (event) => {
+	const handleSubmit = async event => {
 		event.preventDefault();
 
 		if (password !== confirmPassword) {
@@ -26,7 +29,7 @@ const SignUp = ({ signUpStart }) => {
 		signUpStart({ displayName, email, password });
 	};
 
-	const handleChange = (event) => {
+	const handleChange = event => {
 		const { name, value } = event.target;
 		setUserCredentials({ ...userCredentials, [name]: value });
 	};
@@ -44,7 +47,14 @@ const SignUp = ({ signUpStart }) => {
 					label="Display name"
 					required
 				/>
-				<FormInput type="email" name="email" value={email} onChange={handleChange} label="Email" required />
+				<FormInput
+					type="email"
+					name="email"
+					value={email}
+					onChange={handleChange}
+					label="Email"
+					required
+				/>
 				<FormInput
 					type="password"
 					name="password"
@@ -54,7 +64,7 @@ const SignUp = ({ signUpStart }) => {
 					required
 				/>
 				<FormInput
-					type="confirmPassword"
+					type="password"
 					name="confirmPassword"
 					value={confirmPassword}
 					onChange={handleChange}
@@ -67,7 +77,7 @@ const SignUp = ({ signUpStart }) => {
 	);
 };
 
-const mapDispatchToProps = (dispatch) => ({
-	signUpStart: (userCredentials) => dispatch(signUpStart(userCredentials))
+const mapDispatchToProps = dispatch => ({
+	signUpStart: userCredentials => dispatch(signUpStart(userCredentials))
 });
 export default connect(null, mapDispatchToProps)(SignUp);
