@@ -4,8 +4,7 @@ import { CustomButton, FormInput } from '../../../../common/components/index.js'
 import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
-
-// import { signUpStart } from '../../redux/user/user.actions';
+import { signUpStart } from '../../../../redux/user/user.actions';
 
 const SignUp = ({ signUpStart }) => {
 	const [ userCredentials, setUserCredentials ] = useState({
@@ -23,8 +22,8 @@ const SignUp = ({ signUpStart }) => {
 			alert('Passwords do not match');
 			return;
 		}
-		// TODO:
-		// signUpStart({ displayName, email, password });
+
+		signUpStart({ displayName, email, password });
 	};
 
 	const handleChange = (event) => {
@@ -68,8 +67,7 @@ const SignUp = ({ signUpStart }) => {
 	);
 };
 
-// const mapDispatchToProps = (dispatch) => ({
-// 	signUpStart: (userCredentials) => dispatch(signUpStart(userCredentials))
-// });
-// export default connect(null, mapDispatchToProps)(SignUp);
-export default SignUp;
+const mapDispatchToProps = (dispatch) => ({
+	signUpStart: (userCredentials) => dispatch(signUpStart(userCredentials))
+});
+export default connect(null, mapDispatchToProps)(SignUp);

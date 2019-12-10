@@ -2,25 +2,22 @@ import './sign-in.component.scss';
 
 import { CustomButton, FormInput } from '../../../../common/components/index.js';
 import React, { useState } from 'react';
+import { emailSignInStart, googleSignInStart } from '../../../../redux/user/user.actions';
 
-// import { connect } from 'react-redux';
-
-// import { emailSignInStart, googleSignInStart } from '../../redux/user/user.actions';
+import { connect } from 'react-redux';
 
 const SignIn = ({ emailSignInStart, googleSignInStart }) => {
 	const [ userCredentials, setCredentials ] = useState({ email: '', password: '' });
 
 	const { email, password } = userCredentials;
 	const handleSubmit = async (event) => {
-		// TODO:
-		// event.preventDefault();
-		// emailSignInStart(email, password);
+		event.preventDefault();
+		emailSignInStart(email, password);
 	};
 
 	const handleChange = (event) => {
-		// TODO:
-		// const { value, name } = event.target;
-		// setCredentials({ ...userCredentials, [name]: value });
+		const { value, name } = event.target;
+		setCredentials({ ...userCredentials, [name]: value });
 	};
 
 	return (
@@ -42,7 +39,7 @@ const SignIn = ({ emailSignInStart, googleSignInStart }) => {
 				<div className="sign-in-buttons">
 					<CustomButton type="submit">Sign In</CustomButton>
 					<CustomButton onClick={googleSignInStart} isGoogleSignIn type="button">
-						Sign in with Google
+						Google Sign in
 					</CustomButton>
 				</div>
 			</form>
@@ -50,9 +47,8 @@ const SignIn = ({ emailSignInStart, googleSignInStart }) => {
 	);
 };
 
-// const mapDispatchToProps = (dispatch) => ({
-// 	googleSignInStart: () => dispatch(googleSignInStart()),
-// 	emailSignInStart: (email, password) => dispatch(emailSignInStart(email, password))
-// });
-// export default connect(null, mapDispatchToProps)(SignIn);
-export default SignIn;
+const mapDispatchToProps = (dispatch) => ({
+	googleSignInStart: () => dispatch(googleSignInStart()),
+	emailSignInStart: (email, password) => dispatch(emailSignInStart(email, password))
+});
+export default connect(null, mapDispatchToProps)(SignIn);

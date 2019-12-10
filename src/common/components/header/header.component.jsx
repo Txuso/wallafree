@@ -2,8 +2,12 @@ import { HeaderContainer, LogoContainer, OptionLink, OptionsContainer } from './
 
 import Logo from '../../../assets/wallafree.png';
 import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from '../../../redux/user/user.selector';
+import { signOutStart } from '../../../redux/user/user.actions';
 
-const Header = () => (
+const Header = ({ currentUser, signOutStart }) => (
 	<HeaderContainer>
 		<LogoContainer to="/">
 			<img src={Logo} className="logo" alt="" />
@@ -11,7 +15,13 @@ const Header = () => (
 		<OptionsContainer>
 			<OptionLink to="/chat">CHAT</OptionLink>
 			<OptionLink to="/profile">MY PROFILE</OptionLink>
-			<OptionLink to="/signin">SIGN IN</OptionLink>
+			{currentUser ? (
+				<OptionLink as="div" onClick={signOutStart}>
+					SIGN OUT
+				</OptionLink>
+			) : (
+				<OptionLink to="/signin">SIGN IN</OptionLink>
+			)}
 			<OptionLink className="thing" to="/upload">
 				UPLOAD THING
 			</OptionLink>
@@ -19,4 +29,12 @@ const Header = () => (
 	</HeaderContainer>
 );
 
-export default Header;
+const mapStateToProps = createStructuredSelector({
+	currentUser: selectCurrentUser
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	signOutStart: () => dispatch(signOutStart())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
