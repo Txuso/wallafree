@@ -1,12 +1,11 @@
-import React from "react";
+import Category from './category/category.component';
+import { HomePageContainer } from './homepage.styled';
+import React from 'react';
 
 const HomePage = () => (
-  <div>
-    <h1>Wallafree</h1>
-			<p>
-				Wallafre is here
-			</p>
-  </div>
+	<HomePageContainer>
+		<Category />
+	</HomePageContainer>
 );
 
 export default HomePage;

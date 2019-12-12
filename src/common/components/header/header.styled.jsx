@@ -1,3 +1,5 @@
+import '../../styles/colors.scss';
+
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -16,18 +18,18 @@ export const HeaderContainer = styled.div`
 `;
 
 export const LogoContainer = styled(Link)`
-  padding: 25px;
-  width: 70px;
-  height: 100%;
-  .logo {
-	width: 100px;
-  }
-  @media screen and (max-width: 800px) {
+	padding: 25px;
+	width: 70px;
+	height: 100%;
+	.logo {
+		width: 100px;
+	}
+	@media screen and (max-width: 800px) {
 		width: 50px;
 		padding: 0;
 		.logo {
 			width: 70px;
-  		}
+		}
 	}
 `;
 
@@ -41,12 +43,12 @@ export const OptionsContainer = styled.div`
 	@media screen and (max-width: 800px) {
 		width: 80%;
 	}
-	
+
 	.thing {
-		background-color: #ffde17;
+		background-color: var(--primary);
 		color: white;
 		font-weight: bold;
-		transition: .2s ease-in-out,padding;
+		transition: 0.2s ease-in-out, padding;
 		border-radius: 25px;
 		text-align: center;
 
@@ -55,13 +57,20 @@ export const OptionsContainer = styled.div`
 		}
 
 		&:hover {
-		  background-color: #e6c300;
-		  border: none;
+			transform: scale(1.05);
+			color: white;
+			border: none;
+			text-decoration: none;
 		}
 	}
 `;
 
 export const OptionLink = styled(Link)`
-  cursor: pointer;
-  padding: 10px 15px;
+	cursor: pointer;
+	text-decoration: none;
+	padding: 10px 15px;
+	&:hover {
+		color: black;
+		text-decoration: none;
+	}
 `;

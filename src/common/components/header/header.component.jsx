@@ -1,4 +1,9 @@
-import { HeaderContainer, LogoContainer, OptionLink, OptionsContainer } from './header.styled';
+import {
+	HeaderContainer,
+	LogoContainer,
+	OptionLink,
+	OptionsContainer
+} from './header.styled';
 
 import Logo from '../../../assets/wallafree.png';
 import React from 'react';
@@ -13,10 +18,11 @@ const Header = ({ currentUser, signOutStart }) => (
 			<img src={Logo} className="logo" alt="" />
 		</LogoContainer>
 		<OptionsContainer>
+			<OptionLink to="/discover">DISCOVER</OptionLink>
 			<OptionLink to="/chat">CHAT</OptionLink>
 			<OptionLink to="/profile">MY PROFILE</OptionLink>
 			{currentUser ? (
-				<OptionLink as="div" onClick={signOutStart}>
+				<OptionLink to="/" as="div" onClick={signOutStart}>
 					SIGN OUT
 				</OptionLink>
 			) : (
@@ -33,7 +39,7 @@ const mapStateToProps = createStructuredSelector({
 	currentUser: selectCurrentUser
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
 	signOutStart: () => dispatch(signOutStart())
 });
 

@@ -8,6 +8,7 @@ import {
 
 import Alert from 'react-bootstrap/Alert';
 import ChatPage from './pages/chat/chat.component';
+import DiscoverPage from './pages/discover/discover.component';
 import { GlobalStyle } from './global.styles';
 import Header from './common/components/header/header.component';
 import HomePage from './pages/homepage/homepage.component';
@@ -28,17 +29,31 @@ const App = ({ checkUserSession, currentUser, error }) => {
 			<Header />
 			<Switch>
 				<Route exact path="/" component={HomePage} />
-				<Route exact path="/chat" component={ChatPage} />
+				<Route path="/discover" component={DiscoverPage} />
+				<Route
+					path="/chat"
+					render={() =>
+						currentUser ? <ChatPage /> : <Redirect to="/signin" />
+					}
+				/>
 				<Route path="/profile" component={MyProfilePage} />
 				<Route
 					exact
 					path="/signin"
-					component={SignInSignUpPage}
 					render={() =>
 						currentUser ? <Redirect to="/" /> : <SignInSignUpPage />
 					}
 				/>
-				<Route exact path="/upload" component={UploadThingPage} />
+				<Route
+					path="/upload"
+					render={() =>
+						currentUser ? (
+							<UploadThingPage />
+						) : (
+							<Redirect to="/signin" />
+						)
+					}
+				/>
 			</Switch>
 
 			<Alert show={error} dismissible variant={'danger'}>

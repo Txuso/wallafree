@@ -7,6 +7,11 @@ export const selectCurrentUser = createSelector(
 	user => user.currentUser
 );
 
+export const selectCurrentUserId = createSelector(
+	[selectCurrentUser],
+	currentUser => currentUser.id
+);
+
 export const selectLoginError = createSelector(
 	[selectUser],
 	user => user.error

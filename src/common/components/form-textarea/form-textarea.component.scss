@@ -4,7 +4,7 @@
 	position: relative;
 	margin: 25px 0;
 
-	.form-input {
+	.form-textarea {
 		display: block;
 		border: 1px solid var(--grey);
 		border-radius: 6px;
@@ -24,11 +24,7 @@
 			color: var(--grey);
 		}
 	}
-	.input-label {
+	.textarea-label {
 		font-size: $font-size-s;
-	}
-
-	input[type='password'] {
-		letter-spacing: 0.3em;
 	}
 }

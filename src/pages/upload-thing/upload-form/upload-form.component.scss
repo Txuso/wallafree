@@ -1,0 +1,22 @@
+@import '../../../common/styles/font-sizes.scss';
+.upload-thing {
+	display: flex;
+	width: 600px;
+	margin: 0 auto;
+
+	flex-direction: column;
+	text-align: center;
+
+	.upload-section {
+		border: solid 1px var(--primary);
+		margin: 1rem 0;
+		padding: 1rem;
+		border-radius: 10px;
+		text-align: left;
+		&__title {
+			font-size: $font-size-s;
+			color: var(--primary);
+			font-weight: bold;
+		}
+	}
+}
