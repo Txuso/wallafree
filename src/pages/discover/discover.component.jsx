@@ -14,6 +14,7 @@ const DiscoverPage = ({ getThingsStart, things }) => {
 	}, [getThingsStart]);
 	return (
 		<div className="discover">
+			<h1>Discover things around you</h1>
 			{things.map(thing => (
 				<ThingMenuItem key={thing.id} thing={thing}></ThingMenuItem>
 			))}

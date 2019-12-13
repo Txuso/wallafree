@@ -8,7 +8,7 @@ import {
 
 import Alert from 'react-bootstrap/Alert';
 import ChatPage from './pages/chat/chat.component';
-import DiscoverContainer from './pages/discover/discover.container';
+import DiscoverPage from './pages/discover/discover.component';
 import { GlobalStyle } from './global.styles';
 import Header from './common/components/header/header.component';
 import HomePage from './pages/homepage/homepage.component';
@@ -29,7 +29,7 @@ const App = ({ checkUserSession, currentUser, error }) => {
 			<Header />
 			<Switch>
 				<Route exact path="/" component={HomePage} />
-				<Route path="/discover" component={DiscoverContainer} />
+				<Route path="/discover" component={DiscoverPage} />
 				<Route
 					path="/chat"
 					render={() =>
