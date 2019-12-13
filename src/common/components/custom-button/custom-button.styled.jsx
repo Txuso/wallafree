@@ -12,15 +12,15 @@ const buttonStyles = css`
 	}
 `;
 
-const invertedButtonStyles = css`
-	background-color: white;
-	color: black;
-	border: 1px solid black;
+const secondaryButtonStyles = css`
+	background-color: var(--grey);
+	color: white;
+	border: none;
+	border-radius: 5px;
+	transition: 0.2s ease-in-out, padding;
 
 	&:hover {
-		background-color: black;
-		color: white;
-		border: none;
+		transform: scale(1.05);
 	}
 `;
 
@@ -42,7 +42,7 @@ const getButtonStyles = props => {
 		return googleSignInStyles;
 	}
 
-	return props.inverted ? invertedButtonStyles : buttonStyles;
+	return props.secondary ? secondaryButtonStyles : buttonStyles;
 };
 
 export const CustomButtonContainer = styled.button`

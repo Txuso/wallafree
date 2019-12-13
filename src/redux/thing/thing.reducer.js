@@ -18,7 +18,7 @@ const thingReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				isLoading: false,
-				things: action.payload.collectionsMap
+				things: action.payload.things
 			};
 		}
 		case ThingActionsTypes.GET_THINGS_FAILURE: {

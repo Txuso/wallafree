@@ -8,13 +8,13 @@ import {
 
 import Alert from 'react-bootstrap/Alert';
 import ChatPage from './pages/chat/chat.component';
-import DiscoverPage from './pages/discover/discover.component';
+import DiscoverContainer from './pages/discover/discover.container';
 import { GlobalStyle } from './global.styles';
 import Header from './common/components/header/header.component';
 import HomePage from './pages/homepage/homepage.component';
 import MyProfilePage from './pages/myprofile/myprofile.component';
 import SignInSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.component';
-import UploadThingPage from './pages/upload-thing/upload-thing.component';
+import UploadThingContainer from './pages/upload-thing/upload-thing.container';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
@@ -29,7 +29,7 @@ const App = ({ checkUserSession, currentUser, error }) => {
 			<Header />
 			<Switch>
 				<Route exact path="/" component={HomePage} />
-				<Route path="/discover" component={DiscoverPage} />
+				<Route path="/discover" component={DiscoverContainer} />
 				<Route
 					path="/chat"
 					render={() =>
@@ -48,7 +48,7 @@ const App = ({ checkUserSession, currentUser, error }) => {
 					path="/upload"
 					render={() =>
 						currentUser ? (
-							<UploadThingPage />
+							<UploadThingContainer />
 						) : (
 							<Redirect to="/signin" />
 						)

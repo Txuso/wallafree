@@ -1,29 +1,39 @@
 import {
 	addCollectionAndDocuments,
-	convertCollectionsSnapshotToMap,
+	addFilesToStorage,
+	convertCollectionToArray,
 	firestore
 } from '../../common/utils/firebase.utils';
-import { addThingFailure, addThingSuccess } from './thing.actions';
+import {
+	addThingFailure,
+	addThingSuccess,
+	getThingsFailure,
+	getThingsSuccess
+} from './thing.actions';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import ThingActionsTypes from './thing.types';
 
 export function* fetchThingsAsync() {
 	try {
-		const collectionRef = firestore.collection('things');
-		const snapshot = yield collectionRef.get();
-		const collectionsMap = yield call(
-			convertCollectionsSnapshotToMap,
-			snapshot
+		const collectionRef = yield firestore.collection('things').get();
+
+		const convertedCollectionArray = convertCollectionToArray(
+			collectionRef
 		);
-		yield put(addThingSuccess(collectionsMap));
+
+		yield put(getThingsSuccess(convertedCollectionArray));
 	} catch (error) {
-		yield put(addThingFailure(error.message));
+		yield put(getThingsFailure(error.message));
 	}
 }
 
 export function* addThingAsync(action) {
 	try {
+		var file = yield action.payload.thing.imageUrl[0]; // use the Blob or File API
+
+		const imageUrl = yield addFilesToStorage(file);
+		action.payload.thing.imageUrl = imageUrl;
 		yield call(addCollectionAndDocuments, 'things', [action.payload.thing]);
 		yield put(addThingSuccess(action.payload.thing));
 	} catch (error) {

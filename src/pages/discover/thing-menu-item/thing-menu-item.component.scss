@@ -1,0 +1,34 @@
+.thing-menu {
+	border-radius: 10px;
+	box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+	text-decoration: none;
+	overflow: hidden;
+	transition: 0.3s;
+	width: 30.83333%;
+	flex: none;
+	min-width: 260px;
+	height: 260px;
+	margin: 1.25%;
+
+	.background-image {
+		background-position: center;
+		background-size: cover;
+		width: 100%;
+		height: 70%;
+	}
+	.information-content {
+		padding: 1rem;
+	}
+	@media screen and (max-width: 700px) {
+		width: 95%;
+		margin: 2.25%;
+	}
+
+	@media screen and (min-width: 700px) and(max-width: 923px) {
+		width: 47%;
+	}
+	&:hover {
+		transform: scale(1.05);
+		cursor: pointer;
+	}
+}

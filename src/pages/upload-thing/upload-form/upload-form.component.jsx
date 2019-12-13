@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 
 import { FormSelect } from '../../../common/components/form-select/form-select.component';
 import { FormTextArea } from '../../../common/components/form-textarea/form-textarea.component';
+import ImageUploader from 'react-images-upload';
 import { addThingStart } from '../../../redux/thing/thing.actions';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -14,8 +15,7 @@ const UploadForm = ({ addThing, userId }) => {
 	const [thingInfo, setThingInfo] = useState({
 		name: '',
 		description: '',
-		imageUrl:
-			'https://media.istockphoto.com/photos/apple-iphone-x-silver-picture-id1181288724?k=6&m=1181288724&s=612x612&w=0&h=bjcSrKwdqvi6LFU7Rb43uBdUJrf7cVLwya1XRWqchyA=',
+		imageUrl: {},
 		selectedCategory: '1',
 		userId: userId
 	});
@@ -29,6 +29,13 @@ const UploadForm = ({ addThing, userId }) => {
 	const handleChange = event => {
 		const { value, name } = event.target;
 		setThingInfo({ ...thingInfo, [name]: value });
+	};
+
+	const onDrop = picture => {
+		console.log('onDrop', picture);
+
+		setThingInfo({ ...thingInfo, imageUrl: picture });
+		console.log('a ver', thingInfo);
 	};
 
 	return (
@@ -76,6 +83,15 @@ const UploadForm = ({ addThing, userId }) => {
 
 				<section className="upload-section">
 					<span className="upload-section__title">PICTURES</span>
+					<ImageUploader
+						withIcon={true}
+						buttonText="Choose One Image"
+						onChange={onDrop}
+						imgExtension={['.jpg', '.png']}
+						maxFileSize={5242880}
+						withPreview={true}
+						singleImage={true}
+					/>
 				</section>
 				<div className="sign-in-buttons">
 					<CustomButton type="submit">Sumbit Thing</CustomButton>

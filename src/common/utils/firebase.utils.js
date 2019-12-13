@@ -1,5 +1,6 @@
 import 'firebase/firestore';
 import 'firebase/auth';
+import 'firebase/storage'; // <----
 
 import firebase from 'firebase/app';
 
@@ -42,11 +43,14 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 	}
 };
 
-export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+export const addCollectionAndDocuments = async (
+	collectionKey,
+	objectsToAdd
+) => {
 	const collectionRef = firestore.collection(collectionKey);
 	const batch = firestore.batch();
 
-	objectsToAdd.forEach((object) => {
+	objectsToAdd.forEach(object => {
 		const newDocRef = collectionRef.doc();
 		batch.set(newDocRef, object);
 	});
@@ -54,8 +58,24 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
 	return await batch.commit();
 };
 
-export const convertCollectionsSnapshotToMap = (collection) => {
-	const transformedCollection = collection.docs.map((doc) => {
+export const addFilesToStorage = async imageToAdd => {
+	const imageName = imageToAdd.name + imageToAdd.lastModified;
+
+	console.log('k me cuentas', imageToAdd);
+
+	return await storage
+		.child(`images/${imageName}`)
+		.put(imageToAdd)
+		.then(snapshot => {
+			return snapshot.ref.getDownloadURL(); // Will return a promise with the download link
+		});
+};
+export const convertCollectionToArray = collection => {
+	return collection.docs.map(doc => doc.data());
+};
+
+export const convertCollectionsSnapshotToMap = collection => {
+	const transformedCollection = collection.docs.map(doc => {
 		const { title, items } = doc.data();
 
 		return {
@@ -73,7 +93,7 @@ export const convertCollectionsSnapshotToMap = (collection) => {
 };
 export const getCurrentUser = () => {
 	return new Promise((resolve, reject) => {
-		const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+		const unsubscribe = auth.onAuthStateChanged(userAuth => {
 			unsubscribe();
 			resolve(userAuth);
 		}, reject);
@@ -82,6 +102,8 @@ export const getCurrentUser = () => {
 export const auth = firebase.auth();
 
 export const firestore = firebase.firestore();
+
+export const storage = firebase.storage().ref();
 
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
 // Always show google email accounts popup
