@@ -5,6 +5,21 @@ export const setCurrenUser = user => ({
 	payload: { user: user }
 });
 
+export const updateUserInfo = user => ({
+	type: UserActionTypes.UPDATE_CURRENT_USER_INFO,
+	payload: { user: user }
+});
+
+export const updateUserInfoSuccess = (user, info) => ({
+	type: UserActionTypes.UPDATE_CURRENT_USER_INFO_SUCCESS,
+	payload: { user: user, info: info }
+});
+
+export const updateUserInfoError = error => ({
+	type: UserActionTypes.UPDATE_CURRENT_USER_INFO_FAILURE,
+	payload: { error: error }
+});
+
 export const googleSignInStart = () => ({
 	type: UserActionTypes.GOOGLE_SING_IN_START
 });
@@ -58,4 +73,8 @@ export const signUpFailure = error => ({
 
 export const resetError = () => ({
 	type: UserActionTypes.RESET_ERROR
+});
+
+export const resetInfo = () => ({
+	type: UserActionTypes.RESET_INFO
 });

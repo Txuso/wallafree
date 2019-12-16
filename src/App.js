@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { checkUserSession, resetError } from './redux/user/user.actions';
+import {
+	checkUserSession,
+	resetError,
+	resetInfo
+} from './redux/user/user.actions';
 import {
 	selectCurrentUser,
+	selectInfoMessage,
 	selectLoginError
 } from './redux/user/user.selector';
 
@@ -18,7 +23,14 @@ import UploadThingContainer from './pages/upload-thing/upload-thing.container';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
-const App = ({ checkUserSession, currentUser, error }) => {
+const App = ({
+	checkUserSession,
+	currentUser,
+	error,
+	info,
+	resetInfo,
+	resetError
+}) => {
 	useEffect(() => {
 		checkUserSession();
 	}, [checkUserSession]);
@@ -55,8 +67,20 @@ const App = ({ checkUserSession, currentUser, error }) => {
 					}
 				/>
 			</Switch>
-
-			<Alert show={error} dismissible variant={'danger'}>
+			<Alert
+				show={info}
+				onClose={() => resetInfo()}
+				dismissible
+				variant={'success'}
+			>
+				Info: {info ? info : ''}
+			</Alert>
+			<Alert
+				show={error}
+				onClose={() => resetError()}
+				dismissible
+				variant={'danger'}
+			>
 				Error:{' '}
 				{error
 					? error.message
@@ -68,10 +92,12 @@ const App = ({ checkUserSession, currentUser, error }) => {
 
 const mapStateToProps = createStructuredSelector({
 	currentUser: selectCurrentUser,
-	error: selectLoginError
+	error: selectLoginError,
+	info: selectInfoMessage
 });
 const mapDispatchToProps = dispatch => ({
 	checkUserSession: user => dispatch(checkUserSession()),
-	resetError: () => dispatch(resetError())
+	resetError: () => dispatch(resetError()),
+	resetInfo: () => dispatch(resetInfo())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(App);

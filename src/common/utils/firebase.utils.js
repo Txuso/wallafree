@@ -27,12 +27,15 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 			const { displayName, email } = userAuth;
 
 			const createdAt = new Date();
+			const imageUrl =
+				'https://media.istockphoto.com/vectors/avatar-man-thin-line-flat-icon-linear-vector-symbol-colorful-long-vector-id912207906?k=6&m=912207906&s=612x612&w=0&h=V58lnn72hlRKtzFtMYcLTftUfl7zP2Gc6OpFQL_DJWs=';
 
 			try {
 				await userRef.set({
 					displayName,
 					email,
 					createdAt,
+					imageUrl,
 					...additionalData
 				});
 			} catch (error) {
@@ -43,6 +46,10 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 	}
 };
 
+export const updateDocuments = async (collectionKey, objectToUpdate) => {
+	const collectionRef = firestore.collection(collectionKey);
+	return await collectionRef.doc(objectToUpdate.id).update(objectToUpdate);
+};
 export const addCollectionAndDocuments = async (
 	collectionKey,
 	objectsToAdd
@@ -59,13 +66,11 @@ export const addCollectionAndDocuments = async (
 };
 
 export const addFilesToStorage = async imageToAdd => {
-	const imageName = imageToAdd.name + imageToAdd.lastModified;
-
-	console.log('k me cuentas', imageToAdd);
+	const imageName = imageToAdd.name + JSON.stringify(new Date());
 
 	return await storage
 		.child(`images/${imageName}`)
-		.put(imageToAdd)
+		.putString(imageToAdd.imageToProcess, 'data_url')
 		.then(snapshot => {
 			return snapshot.ref.getDownloadURL(); // Will return a promise with the download link
 		});

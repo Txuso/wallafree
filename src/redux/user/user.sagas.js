@@ -1,17 +1,23 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects';
 import {
+	addCollectionAndDocuments,
+	addFilesToStorage,
 	auth,
 	createUserProfileDocument,
+	firestore,
 	getCurrentUser,
-	googleProvider
+	googleProvider,
+	updateDocuments
 } from '../../common/utils/firebase.utils';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import {
 	signInFailure,
 	signInSuccess,
 	signOutFailure,
 	signOutSuccess,
 	signUpFailure,
-	signUpSuccess
+	signUpSuccess,
+	updateUserInfoError,
+	updateUserInfoSuccess
 } from './user.actions';
 
 import UserActionTypes from './user.types';
@@ -107,8 +113,41 @@ export function* signInAfterSignUp({ payload: { user, additionalData } }) {
 export function* onSignUpSuccess() {
 	yield takeLatest(UserActionTypes.SIGN_UP_SUCCESS, signInAfterSignUp);
 }
+
+export function* updateCurrentUserInfo(action) {
+	try {
+		const imageToProcess =
+			action.payload.user && action.payload.user.newImagzeToProcess;
+
+		const { user } = action.payload;
+
+		if (imageToProcess) {
+			const imageUrl = yield addFilesToStorage({
+				name: user.displayName,
+				imageToProcess
+			});
+
+			user.imageUrl = imageUrl;
+		}
+		const info = 'Your profile has been updated correctly';
+		delete user.newImageToProcess;
+		yield call(updateDocuments, 'users', user);
+		yield put(updateUserInfoSuccess(user, info));
+	} catch (error) {
+		yield put(updateUserInfoError(error));
+	}
+}
+
+export function* onUpdateUserInfo() {
+	yield takeLatest(
+		UserActionTypes.UPDATE_CURRENT_USER_INFO,
+		updateCurrentUserInfo
+	);
+}
+
 export function* userSagas() {
 	yield all([
+		call(onUpdateUserInfo),
 		call(onGoogleSignInStart),
 		call(onEmailSignInStart),
 		call(onCheckUserSession),

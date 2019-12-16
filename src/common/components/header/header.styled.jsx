@@ -23,6 +23,11 @@ export const LogoContainer = styled(Link)`
 	height: 100%;
 	.logo {
 		width: 100px;
+		transition: 0.2s ease-in-out, padding;
+
+		&:hover {
+			transform: scale(1.15);
+		}
 	}
 	@media screen and (max-width: 800px) {
 		width: 50px;

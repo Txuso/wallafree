@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 
 import { FormSelect } from '../../../common/components/form-select/form-select.component';
 import { FormTextArea } from '../../../common/components/form-textarea/form-textarea.component';
-import ImageUploader from 'react-images-upload';
 import { addThingStart } from '../../../redux/thing/thing.actions';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -15,12 +14,12 @@ const UploadForm = ({ addThing, userId }) => {
 	const [thingInfo, setThingInfo] = useState({
 		name: '',
 		description: '',
-		imageUrl: {},
-		selectedCategory: '1',
+		imageUrl: null,
+		categoryId: 'clothes',
 		userId: userId
 	});
 
-	const { name, description, selectedCategory } = thingInfo;
+	const { name, description, categoryId, imageUrl } = thingInfo;
 	const handleSubmit = async event => {
 		event.preventDefault();
 		addThing(thingInfo);
@@ -31,11 +30,21 @@ const UploadForm = ({ addThing, userId }) => {
 		setThingInfo({ ...thingInfo, [name]: value });
 	};
 
-	const onDrop = picture => {
-		console.log('onDrop', picture);
+	const readURL = e => {
+		if (e.target.files && e.target.files[0]) {
+			let files = e.target.files;
+			console.log(files);
+			let reader = new FileReader();
+			reader.onload = r => {
+				setThingInfo({
+					...thingInfo,
+					imageUrl: r.target.result
+				});
+			};
+			reader.readAsDataURL(files[0]);
+		}
 
-		setThingInfo({ ...thingInfo, imageUrl: picture });
-		console.log('a ver', thingInfo);
+		// the result image data
 	};
 
 	return (
@@ -60,15 +69,14 @@ const UploadForm = ({ addThing, userId }) => {
 						label="Description"
 						placeholder="Add product status, color and more useful info"
 						value={description}
-						type="textarea"
 						required
 						handleChange={handleChange}
 					/>
 
 					<FormSelect
-						name="selectedCategory"
+						name="categoryId"
 						label="Category"
-						value={selectedCategory}
+						value={categoryId}
 						options={[
 							{ value: '1', label: 'Clothes' },
 							{ value: '2', label: 'Cinema, Books & Music' },
@@ -82,15 +90,22 @@ const UploadForm = ({ addThing, userId }) => {
 				</section>
 
 				<section className="upload-section">
-					<span className="upload-section__title">PICTURES</span>
-					<ImageUploader
-						withIcon={true}
-						buttonText="Choose One Image"
-						onChange={onDrop}
-						imgExtension={['.jpg', '.png']}
-						maxFileSize={5242880}
-						withPreview={true}
-						singleImage={true}
+					<span className="upload-section__title">PICTURE</span>
+					{imageUrl ? (
+						<img
+							value={imageUrl}
+							id="avatar"
+							alt="avatar"
+							className="avatar-rounded"
+							src={imageUrl}
+						></img>
+					) : null}
+
+					<input
+						className="input-reader"
+						type="file"
+						onChange={readURL}
+						accept="image/*"
 					/>
 				</section>
 				<div className="sign-in-buttons">

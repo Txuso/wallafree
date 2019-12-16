@@ -16,3 +16,8 @@ export const selectLoginError = createSelector(
 	[selectUser],
 	user => user.error
 );
+
+export const selectInfoMessage = createSelector(
+	[selectUser],
+	user => user.info
+);

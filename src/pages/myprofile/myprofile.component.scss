@@ -1,11 +1,29 @@
 .myprofile {
-	display: flex;
-	width: 850px;
-	justify-content: space-between;
-
-	@media screen and (max-width: 800px) {
+	&__form {
+		width: 600px;
+		flex-direction: row;
 		margin: 0 auto;
-		width: 100vw;
-		flex-direction: column;
+		display: flex;
+
+		.main-info {
+			width: 100%;
+			position: relative;
+		}
+	}
+
+	&__image-wrapper {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		place-content: center flex-start;
+
+		.avatar-rounded {
+			background-size: cover;
+			border-radius: 50%;
+			background-position: center;
+			height: 100px;
+			width: 100px;
+			margin-right: 2rem;
+		}
 	}
 }

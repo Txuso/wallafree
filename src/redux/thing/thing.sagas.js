@@ -30,10 +30,13 @@ export function* fetchThingsAsync() {
 
 export function* addThingAsync(action) {
 	try {
-		var file = yield action.payload.thing.imageUrl[0]; // use the Blob or File API
+		const { imageUrl, name } = action.payload.thing;
+		const generatedImageUrl = yield addFilesToStorage({
+			name: name,
+			imageToProcess: imageUrl
+		});
 
-		const imageUrl = yield addFilesToStorage(file);
-		action.payload.thing.imageUrl = imageUrl;
+		action.payload.thing.imageUrl = generatedImageUrl;
 		yield call(addCollectionAndDocuments, 'things', [action.payload.thing]);
 		yield put(addThingSuccess(action.payload.thing));
 	} catch (error) {

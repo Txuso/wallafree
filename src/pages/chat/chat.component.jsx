@@ -1,11 +1,14 @@
-import "./chat.component.scss";
+import './chat.component.scss';
 
-import React from "react";
+import { Col, Row } from 'react-bootstrap';
+
+import React from 'react';
 
 const ChatPage = () => (
-  <div className="chat">
-    <h1>Chat Page</h1>
-  </div>
+	<Row className="chat">
+		<Col sm={4}>Chat List</Col>
+		<Col sm={8}>Chat Messages</Col>
+	</Row>
 );
 
 export default ChatPage;
