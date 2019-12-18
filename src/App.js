@@ -43,7 +43,14 @@ const App = ({
 				<Route exact path="/" component={HomePage} />
 				<Route path="/discover" component={DiscoverPage} />
 				<Route
+					exact
 					path="/chat"
+					render={() =>
+						currentUser ? <ChatPage /> : <Redirect to="/signin" />
+					}
+				/>
+				<Route
+					path="/chat/:thingId"
 					render={() =>
 						currentUser ? <ChatPage /> : <Redirect to="/signin" />
 					}

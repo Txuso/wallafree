@@ -1,20 +1,13 @@
 import { createSelector } from 'reselect';
 
-const selectThings = state => state.thing;
+const selectChat = state => state.chat;
 
-export const selectAllThings = createSelector(
-	[selectThings],
-	thing => thing.things
+export const selectAllChatMessages = createSelector(
+	[selectChat],
+	chat => chat.chats
 );
 
-export const selectIsThingLoading = createSelector(
-	[selectThings],
-	thing => thing.isLoading
-);
-
-export const selectCategory = collectionUrlParam =>
-	createSelector([selectAllThings], things =>
-		things
-			? things.filter(thing => thing.categoryId === collectionUrlParam)
-			: []
+export const selectCurrentThingMessages = collectionUrlParam =>
+	createSelector([selectAllChatMessages], chats =>
+		chats ? chats.filter(chat => console.log('chat a ver', chat)) : []
 	);

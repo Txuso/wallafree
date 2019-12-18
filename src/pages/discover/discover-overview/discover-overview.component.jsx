@@ -12,7 +12,7 @@ const DiscoverOverview = ({ things, createChat, history }) => {
 	const onItemClick = thing => {
 		const { id, userId } = thing;
 		createChat(id, userId);
-		history.push(`/chat/${id}`);
+		history.push('chat/' + id);
 	};
 	return (
 		<div className="discover">

@@ -1,7 +1,8 @@
 import ChatActionsTypes from './chat.types';
 
-export const getChatsStart = () => ({
-	type: ChatActionsTypes.GET_CHATS
+export const getChatsStart = thingId => ({
+	type: ChatActionsTypes.GET_CHATS,
+	payload: { thingId: thingId }
 });
 
 export const getChatsSuccess = chats => ({
@@ -26,5 +27,20 @@ export const createChatSuccess = chat => ({
 
 export const createChatFailure = error => ({
 	type: ChatActionsTypes.CREATE_CHAT_FAILURE,
+	payload: { error: error }
+});
+
+export const sendMessage = (message, thingId, userId) => ({
+	type: ChatActionsTypes.SEND_MESSAGE,
+	payload: { message: message, thingId: thingId, userId: userId }
+});
+
+export const sendMessageSuccess = (message, thingId, userId) => ({
+	type: ChatActionsTypes.SEND_MESSAGE_SUCCESS,
+	payload: { message: message, thingId: thingId, userId: userId }
+});
+
+export const sendMessageFailure = error => ({
+	type: ChatActionsTypes.SEND_MESSAGE_FAILURE,
 	payload: { error: error }
 });
