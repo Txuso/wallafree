@@ -4,13 +4,13 @@ import Logo from '../../../assets/send-message.png';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
-const ThingMenuItem = ({ history, thing, match, linkUrl }) => (
+const ThingMenuItem = ({ thing, onClick }) => (
 	<div className={`thing-menu`}>
 		<div
 			style={{ backgroundImage: `url(${thing.imageUrl})` }}
 			className="background-image"
 		>
-			<div className="logo-wrapper" onClick={() => history.push('/chat')}>
+			<div className="logo-wrapper" onClick={() => onClick(thing)}>
 				<img src={Logo} className="logo" alt="" />
 			</div>
 		</div>

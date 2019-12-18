@@ -50,11 +50,22 @@ export const updateDocuments = async (collectionKey, objectToUpdate) => {
 	const collectionRef = firestore.collection(collectionKey);
 	return await collectionRef.doc(objectToUpdate.id).update(objectToUpdate);
 };
+
+export const addSingleCollectionWithId = async (
+	collectionKey,
+	id,
+	objectToAdd
+) => {
+	const collectionRef = firestore.collection(collectionKey);
+	return await collectionRef.doc(id).set(objectToAdd);
+};
+
 export const addCollectionAndDocuments = async (
 	collectionKey,
 	objectsToAdd
 ) => {
 	const collectionRef = firestore.collection(collectionKey);
+
 	const batch = firestore.batch();
 
 	objectsToAdd.forEach(object => {
@@ -76,7 +87,10 @@ export const addFilesToStorage = async imageToAdd => {
 		});
 };
 export const convertCollectionToArray = collection => {
-	return collection.docs.map(doc => doc.data());
+	return collection.docs.map(doc => {
+		const data = doc.data();
+		return { ...data, id: doc.id };
+	});
 };
 
 export const convertCollectionsSnapshotToMap = collection => {

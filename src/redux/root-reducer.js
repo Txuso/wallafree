@@ -1,4 +1,5 @@
 import categoryReducer from './categories/categories.reducer';
+import chatReducer from './chat/chat.reducer';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -14,6 +15,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
 	user: userReducer,
 	category: categoryReducer,
-	thing: thingReducer
+	thing: thingReducer,
+	chat: chatReducer
 });
 export default persistReducer(persistConfig, rootReducer);
