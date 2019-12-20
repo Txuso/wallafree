@@ -33,13 +33,21 @@ export function* fetchMyChatsAsync(action) {
 export function* addChatAsync(action) {
 	try {
 		const { userId, thingId } = action.payload;
-		const newChat = {
-			messages: [],
-			userId: userId
-		};
+		var chatsRef = yield firestore
+			.collection('chats')
+			.doc(thingId)
+			.get();
 
-		yield call(addSingleCollectionWithId, 'chats', thingId, newChat);
-		yield put(createChatSuccess(newChat));
+		if (!chatsRef.exists) {
+			const newChat = {
+				messages: [],
+				userId: userId
+			};
+			yield call(addSingleCollectionWithId, 'chats', thingId, newChat);
+			yield put(createChatSuccess(newChat));
+		} else {
+			yield put(createChatSuccess(null));
+		}
 	} catch (error) {
 		yield put(createChatFailure(error.message));
 	}
@@ -56,9 +64,10 @@ export function* sendMessageAsync(action) {
 
 		var chatsRef = yield firestore.collection('chats').doc(thingId);
 
-		yield chatsRef.update({
-			messages: firebase.firestore.FieldValue.arrayUnion(newMessage)
-		});
+		yield chatsRef.set(
+			{ messages: firebase.firestore.FieldValue.arrayUnion(newMessage) },
+			{ merge: true }
+		);
 
 		yield put(sendMessageSuccess(newMessage, thingId));
 	} catch (error) {
