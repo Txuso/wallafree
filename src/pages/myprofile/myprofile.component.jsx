@@ -11,16 +11,16 @@ import { updateUserInfo } from '../../redux/user/user.actions';
 
 const MyProfilePage = ({ updateUserInfo, currentUser }) => {
 	const [userInfo, setUserInfo] = useState({
-		displayName: currentUser.displayName,
-		description: currentUser.description,
-		imageUrl: currentUser.imageUrl,
-		userId: currentUser.id,
-		email: currentUser.email,
-		newImageToProcess: currentUser.imageUrl
+		displayName: '',
+		description: '',
+		imageUrl: '',
+		userId: '',
+		email: '',
+		newImageToProcess: ''
 	});
 
 	React.useEffect(() => {
-		setUserInfo(currentUser);
+		currentUser ? setUserInfo(currentUser) : setUserInfo({});
 	}, [currentUser]);
 
 	const handleSubmit = event => {

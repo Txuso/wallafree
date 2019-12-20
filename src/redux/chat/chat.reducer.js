@@ -41,6 +41,23 @@ const chatReducer = (state = INITIAL_STATE, action) => {
 				chats: [...state.chats, action.payload.chat]
 			};
 		}
+		case ChatActionsTypes.SEND_MESSAGE_SUCCESS: {
+			// create a deep copy of the chat object due to nested objects
+			const newMessages = JSON.parse(JSON.stringify([...state.chats]));
+			const index = newMessages.findIndex(
+				chat => chat.id === action.payload.thingId
+			);
+			newMessages[index].messages = [
+				...newMessages[index].messages,
+				action.payload.message
+			];
+
+			return {
+				...state,
+				isLoading: false,
+				chats: newMessages
+			};
+		}
 		case ChatActionsTypes.CREATE_CHATS_FAILURE: {
 			return {
 				...state,

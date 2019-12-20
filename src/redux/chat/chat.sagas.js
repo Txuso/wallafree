@@ -8,19 +8,22 @@ import {
 	createChatFailure,
 	createChatSuccess,
 	getChatsFailure,
-	getChatsSuccess
+	getChatsSuccess,
+	sendMessageFailure,
+	sendMessageSuccess
 } from './chat.actions';
 
 import ChatActionsTypes from './chat.types';
 import firebase from 'firebase';
 
-export function* fetchChatsAsync(action) {
+export function* fetchMyChatsAsync(action) {
 	try {
 		const collectionRef = yield firestore.collection('chats').get();
 
 		const convertedCollectionArray = convertCollectionToArray(
 			collectionRef
 		);
+
 		yield put(getChatsSuccess(convertedCollectionArray));
 	} catch (error) {
 		yield put(getChatsFailure(error.message));
@@ -48,7 +51,7 @@ export function* sendMessageAsync(action) {
 		const newMessage = {
 			userId: userId,
 			message: message,
-			timestamp: new Date()
+			timestamp: new Date().getTime()
 		};
 
 		var chatsRef = yield firestore.collection('chats').doc(thingId);
@@ -57,9 +60,9 @@ export function* sendMessageAsync(action) {
 			messages: firebase.firestore.FieldValue.arrayUnion(newMessage)
 		});
 
-		yield put(createChatSuccess(newMessage));
+		yield put(sendMessageSuccess(newMessage, thingId));
 	} catch (error) {
-		yield put(createChatFailure(error.message));
+		yield put(sendMessageFailure(error.message));
 	}
 }
 
@@ -67,8 +70,8 @@ export function* sendMessageStart() {
 	yield takeLatest(ChatActionsTypes.SEND_MESSAGE, sendMessageAsync);
 }
 
-export function* getChatsCollectionsStart() {
-	yield takeLatest(ChatActionsTypes.GET_CHATS, fetchChatsAsync);
+export function* getMyChatsCollectionsStart() {
+	yield takeLatest(ChatActionsTypes.GET_CHATS, fetchMyChatsAsync);
 }
 
 export function* addChatStart() {
@@ -77,7 +80,7 @@ export function* addChatStart() {
 
 export function* chatSagas() {
 	yield all([
-		call(getChatsCollectionsStart),
+		call(getMyChatsCollectionsStart),
 		call(addChatStart),
 		call(sendMessageStart)
 	]);

@@ -1,8 +1,8 @@
 import ChatActionsTypes from './chat.types';
 
-export const getChatsStart = thingId => ({
+export const getChatsStart = userId => ({
 	type: ChatActionsTypes.GET_CHATS,
-	payload: { thingId: thingId }
+	payload: { userId: userId }
 });
 
 export const getChatsSuccess = chats => ({
@@ -35,9 +35,9 @@ export const sendMessage = (message, thingId, userId) => ({
 	payload: { message: message, thingId: thingId, userId: userId }
 });
 
-export const sendMessageSuccess = (message, thingId, userId) => ({
+export const sendMessageSuccess = (message, thingId) => ({
 	type: ChatActionsTypes.SEND_MESSAGE_SUCCESS,
-	payload: { message: message, thingId: thingId, userId: userId }
+	payload: { message: message, thingId: thingId }
 });
 
 export const sendMessageFailure = error => ({

@@ -9,7 +9,7 @@ export const selectCurrentUser = createSelector(
 
 export const selectCurrentUserId = createSelector(
 	[selectCurrentUser],
-	currentUser => currentUser.id
+	currentUser => currentUser && currentUser.id
 );
 
 export const selectLoginError = createSelector(

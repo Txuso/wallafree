@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import { createChatStart } from '../../../redux/chat/chat.actions';
 import { createStructuredSelector } from 'reselect';
 import { selectAllThings } from '../../../redux/thing/thing.selectors';
+import { selectCurrentUserId } from '../../../redux/user/user.selector';
 import { withRouter } from 'react-router-dom';
 
-const DiscoverOverview = ({ things, createChat, history }) => {
+const DiscoverOverview = ({ things, createChat, history, currentUserId }) => {
 	const onItemClick = thing => {
 		const { id, userId } = thing;
 		createChat(id, userId);
@@ -22,6 +23,7 @@ const DiscoverOverview = ({ things, createChat, history }) => {
 						onClick={onItemClick}
 						key={i}
 						thing={thing}
+						currentUserId={currentUserId}
 					></ThingMenuItem>
 				))}
 			</section>
@@ -30,7 +32,8 @@ const DiscoverOverview = ({ things, createChat, history }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-	things: selectAllThings
+	things: selectAllThings,
+	currentUserId: selectCurrentUserId
 });
 
 const mapDispatchToProps = dispatch => ({
