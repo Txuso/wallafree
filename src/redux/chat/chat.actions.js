@@ -5,6 +5,21 @@ export const getChatsStart = userId => ({
 	payload: { userId: userId }
 });
 
+export const getChatMessages = chatId => ({
+	type: ChatActionsTypes.GET_CHAT_MESSAGES,
+	payload: { chatId: chatId }
+});
+
+export const getChatMessagesSuccess = messages => ({
+	type: ChatActionsTypes.GET_CHAT_MESSAGES_SUCCESS,
+	payload: { messages: messages }
+});
+
+export const getChatMessagesFailure = error => ({
+	type: ChatActionsTypes.GET_CHAT_MESSAGES_FAILURE,
+	payload: { error: error }
+});
+
 export const getChatsSuccess = chats => ({
 	type: ChatActionsTypes.GET_CHATS_SUCCESS,
 	payload: { chats: chats }
@@ -15,9 +30,9 @@ export const getChatsFailure = error => ({
 	payload: { error: error }
 });
 
-export const createChatStart = (thingId, userId) => ({
+export const createChatStart = (currentUserId, thingId, userId) => ({
 	type: ChatActionsTypes.CREATE_CHAT,
-	payload: { thingId: thingId, userId: userId }
+	payload: { ownerId: userId, thingId: thingId, requestUserId: currentUserId }
 });
 
 export const createChatSuccess = chat => ({
@@ -30,14 +45,14 @@ export const createChatFailure = error => ({
 	payload: { error: error }
 });
 
-export const sendMessage = (message, thingId, userId) => ({
+export const sendMessage = (message, userId, id) => ({
 	type: ChatActionsTypes.SEND_MESSAGE,
-	payload: { message: message, thingId: thingId, userId: userId }
+	payload: { message: message, chatId: id, userId: userId }
 });
 
 export const sendMessageSuccess = (message, thingId) => ({
 	type: ChatActionsTypes.SEND_MESSAGE_SUCCESS,
-	payload: { message: message, thingId: thingId }
+	payload: { message: message }
 });
 
 export const sendMessageFailure = error => ({

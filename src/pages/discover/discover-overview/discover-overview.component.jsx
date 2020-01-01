@@ -10,21 +10,18 @@ import { selectCurrentUserId } from '../../../redux/user/user.selector';
 import { withRouter } from 'react-router-dom';
 
 const DiscoverOverview = ({ things, createChat, history, currentUserId }) => {
-	const onItemClick = thing => {
+	const onItemClick = (thing) => {
 		const { id, userId } = thing;
-		createChat(id, userId);
-		history.push('chat/' + id);
+		console.log('component', id, userId, currentUserId);
+
+		createChat(currentUserId, id, userId);
+		history.push('chat/');
 	};
 	return (
 		<div className="discover">
 			<section className="things-container">
 				{things.map((thing, i) => (
-					<ThingMenuItem
-						onClick={onItemClick}
-						key={i}
-						thing={thing}
-						currentUserId={currentUserId}
-					></ThingMenuItem>
+					<ThingMenuItem onClick={onItemClick} key={i} thing={thing} currentUserId={currentUserId} />
 				))}
 			</section>
 		</div>
@@ -36,10 +33,8 @@ const mapStateToProps = createStructuredSelector({
 	currentUserId: selectCurrentUserId
 });
 
-const mapDispatchToProps = dispatch => ({
-	createChat: (id, userId) => dispatch(createChatStart(id, userId))
+const mapDispatchToProps = (dispatch) => ({
+	createChat: (currentUserId, id, userId) => dispatch(createChatStart(currentUserId, id, userId))
 });
 
-export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(DiscoverOverview)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DiscoverOverview));

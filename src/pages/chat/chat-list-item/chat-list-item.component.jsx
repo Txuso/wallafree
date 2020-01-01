@@ -4,7 +4,7 @@ import React from 'react';
 
 const ChatListItem = ({ chat, onClick }) => (
 	<div onClick={() => onClick(chat.id)} className="message-container">
-		{chat.userId}
+		{chat.id}
 	</div>
 );
 

@@ -1,27 +1,38 @@
 import './chat-messages.component.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { getChatsStart, sendMessage } from '../../../redux/chat/chat.actions';
+import {
+	getChatMessages,
+	getChatsStart,
+	sendMessage
+} from '../../../redux/chat/chat.actions';
 
 import Message from '../message/message.component';
 import MessageContainer from '../message-container/message-container.component';
 import { connect } from 'react-redux';
-import { selectCurrentThingChat } from '../../../redux/chat/chat.selectors';
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentChatMessages } from '../../../redux/chat/chat.selectors';
 import { selectCurrentUserId } from '../../../redux/user/user.selector';
 import { withRouter } from 'react-router-dom';
 
-const ChatMessages = ({ sendMessage, userId, match, chat, getChatsStart }) => {
+const ChatMessages = ({
+	sendMessage,
+	userId,
+	match,
+	messages,
+	getChatsStart
+}) => {
 	const messagesEndRef = useRef(null);
 
 	useEffect(() => {
-		getChatsStart(userId);
-	}, [getChatsStart, userId]);
+		getChatsStart(match.params.chatId);
+	}, [getChatsStart, match.params.chatId]);
 
 	const scrollToBottom = () => {
 		messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
 	};
 
-	useEffect(scrollToBottom, [chat]);
+	useEffect(scrollToBottom, [messages]);
 
 	const [messageInfo, setMessage] = useState('');
 
@@ -33,16 +44,16 @@ const ChatMessages = ({ sendMessage, userId, match, chat, getChatsStart }) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
 			if (messageInfo.length > 0) {
-				sendMessage(messageInfo, match.params.thingId, userId);
+				sendMessage(messageInfo, userId, match.params.chatId);
 			}
 		}
 	};
 
 	return (
 		<div className="chat">
-			{chat && chat.messages && chat.messages.length > 0 ? (
+			{messages && messages.length > 0 ? (
 				<div>
-					{chat.messages.map((message, index) => (
+					{messages.map((message, index) => (
 						<Message
 							key={index}
 							message={message.message}
@@ -67,15 +78,15 @@ const ChatMessages = ({ sendMessage, userId, match, chat, getChatsStart }) => {
 	);
 };
 
-const mapStateToProps = (state, ownProps) => ({
-	userId: selectCurrentUserId(state),
-	chat: selectCurrentThingChat(ownProps.match.params.thingId)(state)
+const mapStateToProps = createStructuredSelector({
+	userId: selectCurrentUserId,
+	messages: selectCurrentChatMessages
 });
 
 const mapDispatchToProps = dispatch => ({
-	sendMessage: (messageInfo, thingId, userId) =>
-		dispatch(sendMessage(messageInfo, thingId, userId)),
-	getChatsStart: userId => dispatch(getChatsStart(userId))
+	sendMessage: (messageInfo, userId, id) =>
+		dispatch(sendMessage(messageInfo, userId, id)),
+	getChatsStart: chatId => dispatch(getChatMessages(chatId))
 });
 
 export default withRouter(

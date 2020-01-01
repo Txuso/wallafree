@@ -50,7 +50,7 @@ const App = ({
 					}
 				/>
 				<Route
-					path="/chat/:thingId"
+					path="/chat/:chatId"
 					render={() =>
 						currentUser ? <ChatPage /> : <Redirect to="/signin" />
 					}

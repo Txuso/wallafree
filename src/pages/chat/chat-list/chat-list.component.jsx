@@ -11,24 +11,37 @@ import { selectCurrentUserId } from '../../../redux/user/user.selector';
 import { withRouter } from 'react-router-dom';
 
 const ChatList = ({ userId, history, chats, getChatsStart }) => {
-	useEffect(() => {
-		getChatsStart(userId);
-	}, [getChatsStart, userId]);
+	useEffect(
+		() => {
+			getChatsStart(userId);
+		},
+		[ getChatsStart, userId ]
+	);
 
-	const openChatConversation = id => {
+	useEffect(
+		() => {
+			// Run! Like go get some data from an API.
+			const redirectToFirstChat = () => {
+				if (chats.length > 0) {
+					history.push('/chat/' + chats[0].id);
+				}
+			};
+
+			redirectToFirstChat();
+		},
+		[ chats, history ]
+	);
+
+	const openChatConversation = (id) => {
 		history.push('/chat/' + id);
 	};
 	return (
 		<div className="chat-list">
-			{chats
-				? chats.map(chat => (
-						<ChatListItem
-							onClick={() => openChatConversation(chat.id)}
-							key={chat.id}
-							chat={chat}
-						/>
-				  ))
-				: null}
+			{chats ? (
+				chats.map((chat, index) => (
+					<ChatListItem onClick={() => openChatConversation(chat.id)} key={index} chat={chat} />
+				))
+			) : null}
 		</div>
 	);
 };
@@ -38,12 +51,9 @@ const mapStateToProps = createStructuredSelector({
 	chats: selectAllChatMessages
 });
 
-const mapDispatchToProps = dispatch => ({
-	sendMessage: (messageInfo, thingId, userId) =>
-		dispatch(sendMessage(messageInfo, thingId, userId)),
-	getChatsStart: userId => dispatch(getChatsStart(userId))
+const mapDispatchToProps = (dispatch) => ({
+	sendMessage: (messageInfo, thingId, userId) => dispatch(sendMessage(messageInfo, thingId, userId)),
+	getChatsStart: (userId) => dispatch(getChatsStart(userId))
 });
 
-export default withRouter(
-	connect(mapStateToProps, mapDispatchToProps)(ChatList)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChatList));
