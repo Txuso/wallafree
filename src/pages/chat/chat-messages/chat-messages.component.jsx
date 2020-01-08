@@ -7,6 +7,7 @@ import {
 	sendMessage
 } from '../../../redux/chat/chat.actions';
 
+import { FormTextArea } from '../../../common/components/form-textarea/form-textarea.component';
 import Message from '../message/message.component';
 import MessageContainer from '../message-container/message-container.component';
 import { connect } from 'react-redux';
@@ -38,6 +39,7 @@ const ChatMessages = ({
 
 	const handleChange = event => {
 		const { value } = event.target;
+
 		setMessage(value);
 	};
 	const onKeyPress = e => {
@@ -45,6 +47,8 @@ const ChatMessages = ({
 			e.preventDefault();
 			if (messageInfo.length > 0) {
 				sendMessage(messageInfo, userId, match.params.chatId);
+
+				setMessage('');
 			}
 		}
 	};
@@ -71,8 +75,9 @@ const ChatMessages = ({
 			<div ref={messagesEndRef} />
 
 			<MessageContainer
-				handleChange={handleChange}
 				onKeyPress={onKeyPress}
+				handleChange={handleChange}
+				value={messageInfo}
 			/>
 		</div>
 	);
