@@ -1,4 +1,8 @@
-import { addCollectionAndDocuments, convertCollectionToArray, firestore } from '../../common/utils/firebase.utils';
+import {
+	addCollectionAndDocuments,
+	convertCollectionToArray,
+	firestore
+} from '../../common/utils/firebase.utils';
 import { all, call, put, take, takeLatest } from 'redux-saga/effects';
 import {
 	createChatFailure,
@@ -20,12 +24,23 @@ export function* fetchMyChatsAsync(action) {
 			.collection('chats')
 			.where('requestUserId', '==', action.payload.userId)
 			.get();
-		const collectionRef2 = yield firestore.collection('chats').where('userId', '==', action.payload.userId).get();
+		const collectionRef2 = yield firestore
+			.collection('chats')
+			.where('userId', '==', action.payload.userId)
+			.get();
 
-		const convertedCollectionArray = convertCollectionToArray(collectionRef);
-		const convertedCollectionArray2 = convertCollectionToArray(collectionRef2);
+		const convertedCollectionArray = convertCollectionToArray(
+			collectionRef
+		);
+		const convertedCollectionArray2 = convertCollectionToArray(
+			collectionRef2
+		);
 
-		yield put(getChatsSuccess(convertedCollectionArray.concat(convertedCollectionArray2)));
+		yield put(
+			getChatsSuccess(
+				convertedCollectionArray.concat(convertedCollectionArray2)
+			)
+		);
 	} catch (error) {
 		yield put(getChatsFailure(error.message));
 	}
@@ -39,7 +54,9 @@ export function* fetchMyChatMessagesAsync(action) {
 			.collection('messages')
 			.get();
 
-		const convertedCollectionArray = convertCollectionToArray(collectionRef);
+		const convertedCollectionArray = convertCollectionToArray(
+			collectionRef
+		);
 		yield put(getChatMessagesSuccess(convertedCollectionArray));
 	} catch (error) {
 		yield put(getChatMessagesFailure(error.message));
@@ -55,7 +72,7 @@ export function* addChatAsync(action) {
 			thingId: thingId
 		};
 
-		yield call(addCollectionAndDocuments, 'chats', [ newChat ]);
+		yield call(addCollectionAndDocuments, 'chats', [newChat]);
 		yield put(createChatSuccess(newChat));
 	} catch (error) {
 		yield put(createChatFailure(error.message));
@@ -68,10 +85,15 @@ export function* sendMessageAsync(action) {
 		const newMessage = {
 			userId: userId,
 			message: message,
-			timestamp: new Date().getTime()
+			timestamp: new Date().getTime(),
+			chatId: chatId
 		};
 
-		yield firestore.collection('chats').doc(chatId).collection('messages').add(newMessage);
+		yield firestore
+			.collection('chats')
+			.doc(chatId)
+			.collection('messages')
+			.add(newMessage);
 
 		// yield chatsRef.set(
 		// 	{ messages: firebase.firestore.FieldValue.arrayUnion(newMessage) },
@@ -87,28 +109,51 @@ export function* sendMessageAsync(action) {
 
 function* syncUsers() {
 	// #1
-	const channel = new eventChannel((emiter) => {
-		const listener = firestore
-			.collection('chats')
-			.doc('91vLH9H6EMp5POtmUMC0')
-			.collection('messages')
-			.onSnapshot((snapshot) => {
-				emiter({ data: snapshot.docs });
-			});
+	const channel = new eventChannel(emitter => {
+		const listeners = [];
+		listeners.push(
+			firestore
+				.collection('chats')
+				.doc('EXvN84nhbbYxdBU1FcBr')
+				.collection('messages')
+				.onSnapshot(snapshot => {
+					emitter({
+						data: snapshot.docs
+					});
+				})
+		);
+
+		listeners.push(
+			firestore
+				.collection('chats')
+				.doc('aWTNraILYqApZG9tSOWI')
+				.collection('messages')
+				.onSnapshot(snapshot => {
+					emitter({
+						data: snapshot.docs
+					});
+				})
+		);
 
 		return () => {
-			listener.off();
+			// listeners.forEach.off();
 		};
 	});
 
 	while (true) {
 		const { data } = yield take(channel);
 
-		const newMessages = data.map((snap) => snap.data());
+		const newMessages = data.map(snap => snap.data());
 
-		console.log('a ver', newMessages);
-
-		yield put(getChatMessagesSuccess(newMessages));
+		if (
+			newMessages.length > 0 &&
+			newMessages[newMessages.length - 1].chatId ===
+				window.location.href.substring(
+					window.location.href.lastIndexOf('/') + 1
+				)
+		) {
+			yield put(getChatMessagesSuccess(newMessages));
+		}
 	}
 }
 
@@ -121,7 +166,10 @@ export function* getMyChatsCollectionsStart() {
 }
 
 export function* getMyChatMessagesCollectionsStart() {
-	yield takeLatest(ChatActionsTypes.GET_CHAT_MESSAGES, fetchMyChatMessagesAsync);
+	yield takeLatest(
+		ChatActionsTypes.GET_CHAT_MESSAGES,
+		fetchMyChatMessagesAsync
+	);
 }
 
 export function* addChatStart() {
