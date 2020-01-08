@@ -111,7 +111,6 @@ function* syncUsers() {
 				const { userId, requestUserId } = doc.data();
 				const currenUserId = localStorage.getItem('userId');
 				if (userId === currenUserId || requestUserId === currenUserId) {
-					console.log('doc.data().userId', doc.data().userId);
 					listeners.push(
 						firestore
 							.collection('chats')

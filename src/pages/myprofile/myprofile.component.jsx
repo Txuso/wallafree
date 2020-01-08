@@ -35,7 +35,7 @@ const MyProfilePage = ({ updateUserInfo, currentUser }) => {
 	const readURL = e => {
 		if (e.target.files && e.target.files[0]) {
 			let files = e.target.files;
-			console.log(files);
+
 			let reader = new FileReader();
 			reader.onload = r => {
 				setUserInfo({
