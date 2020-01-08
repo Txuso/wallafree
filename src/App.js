@@ -63,7 +63,16 @@ const App = ({
 						)
 					}
 				/>
-				<Route path="/profile" component={MyProfilePage} />
+				<Route
+					path="/profile"
+					render={() =>
+						currentUser.userId !== '' ? (
+							<MyProfilePage />
+						) : (
+							<Redirect to="/signin" />
+						)
+					}
+				/>
 				<Route
 					exact
 					path="/signin"
