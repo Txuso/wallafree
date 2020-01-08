@@ -111,32 +111,31 @@ function* syncUsers() {
 	// #1
 	const channel = new eventChannel(emitter => {
 		const listeners = [];
-		listeners.push(
-			firestore
-				.collection('chats')
-				.doc('EXvN84nhbbYxdBU1FcBr')
-				.collection('messages')
-				.onSnapshot(snapshot => {
-					emitter({
-						data: snapshot.docs
-					});
-				})
-		);
 
-		listeners.push(
-			firestore
-				.collection('chats')
-				.doc('aWTNraILYqApZG9tSOWI')
-				.collection('messages')
-				.onSnapshot(snapshot => {
-					emitter({
-						data: snapshot.docs
-					});
-				})
-		);
+		firestore.collection('chats').onSnapshot(querySnapshot => {
+			querySnapshot.forEach(doc => {
+				// doc.data() is never undefined for query doc snapshots
+				const { userId, requestUserId } = doc.data();
+				const currenUserId = localStorage.getItem('userId');
+				if (userId === currenUserId || requestUserId === currenUserId) {
+					console.log('doc.data().userId', doc.data().userId);
+					listeners.push(
+						firestore
+							.collection('chats')
+							.doc(doc.id)
+							.collection('messages')
+							.onSnapshot(snapshot => {
+								emitter({
+									data: snapshot.docs
+								});
+							})
+					);
+				}
+			});
+		});
 
 		return () => {
-			// listeners.forEach.off();
+			listeners.forEach(listener => listener.off());
 		};
 	});
 
@@ -144,18 +143,19 @@ function* syncUsers() {
 		const { data } = yield take(channel);
 
 		const newMessages = data.map(snap => snap.data());
-
+		const currentUrl = window.location.href;
+		// last message in the array contains the last sent message
 		if (
 			newMessages.length > 0 &&
 			newMessages[newMessages.length - 1].chatId ===
-				window.location.href.substring(
-					window.location.href.lastIndexOf('/') + 1
-				)
+				currentUrl.substring(currentUrl.lastIndexOf('/') + 1)
 		) {
 			yield put(getChatMessagesSuccess(newMessages));
 		}
 	}
 }
+
+export function* checkForNewChats() {}
 
 export function* sendMessageStart() {
 	yield takeLatest(ChatActionsTypes.SEND_MESSAGE, sendMessageAsync);

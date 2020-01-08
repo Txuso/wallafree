@@ -30,6 +30,7 @@ export function* getSnapshotFromUserAuth(userAuth, additionalData) {
 			additionalData
 		);
 		const userSnapshot = yield userRef.get();
+		localStorage.setItem('userId', userSnapshot.id);
 		yield put(
 			signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() })
 		);
