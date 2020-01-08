@@ -21,7 +21,7 @@ const Header = ({ currentUser, signOutStart }) => (
 			<OptionLink to="/discover">DISCOVER</OptionLink>
 			<OptionLink to="/chat">CHAT</OptionLink>
 			<OptionLink to="/profile">MY PROFILE</OptionLink>
-			{currentUser ? (
+			{currentUser.userId !== '' ? (
 				<OptionLink to="/" as="div" onClick={signOutStart}>
 					SIGN OUT
 				</OptionLink>

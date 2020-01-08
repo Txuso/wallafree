@@ -95,12 +95,6 @@ export function* sendMessageAsync(action) {
 			.collection('messages')
 			.add(newMessage);
 
-		// yield chatsRef.set(
-		// 	{ messages: firebase.firestore.FieldValue.arrayUnion(newMessage) },
-		// 	{ merge: true }
-		// );
-		// yield call(addSingleCollectionWithId, 'chats', chatId, newMessage);
-
 		yield put(sendMessageSuccess(newMessage));
 	} catch (error) {
 		yield put(sendMessageFailure(error.message));
@@ -114,7 +108,6 @@ function* syncUsers() {
 
 		firestore.collection('chats').onSnapshot(querySnapshot => {
 			querySnapshot.forEach(doc => {
-				// doc.data() is never undefined for query doc snapshots
 				const { userId, requestUserId } = doc.data();
 				const currenUserId = localStorage.getItem('userId');
 				if (userId === currenUserId || requestUserId === currenUserId) {

@@ -30,7 +30,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
 		case UserActionTypes.SIGN_OUT_SUCCESS:
 			return {
 				...state,
-				currentUser: null,
+				currentUser: INITIAL_STATE.currentUser,
 				error: null
 			};
 		case UserActionTypes.UPDATE_CURRENT_USER_INFO_FAILURE:

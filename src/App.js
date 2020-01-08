@@ -46,13 +46,21 @@ const App = ({
 					exact
 					path="/chat"
 					render={() =>
-						currentUser ? <ChatPage /> : <Redirect to="/signin" />
+						currentUser.userId !== '' ? (
+							<ChatPage />
+						) : (
+							<Redirect to="/signin" />
+						)
 					}
 				/>
 				<Route
 					path="/chat/:chatId"
 					render={() =>
-						currentUser ? <ChatPage /> : <Redirect to="/signin" />
+						currentUser.userId !== '' ? (
+							<ChatPage />
+						) : (
+							<Redirect to="/signin" />
+						)
 					}
 				/>
 				<Route path="/profile" component={MyProfilePage} />
@@ -60,13 +68,17 @@ const App = ({
 					exact
 					path="/signin"
 					render={() =>
-						currentUser ? <Redirect to="/" /> : <SignInSignUpPage />
+						currentUser.userId !== '' ? (
+							<Redirect to="/" />
+						) : (
+							<SignInSignUpPage />
+						)
 					}
 				/>
 				<Route
 					path="/upload"
 					render={() =>
-						currentUser ? (
+						currentUser.userId !== '' ? (
 							<UploadThingContainer />
 						) : (
 							<Redirect to="/signin" />
