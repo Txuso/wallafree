@@ -2,6 +2,7 @@ import {
 	addCollectionAndDocuments,
 	addFilesToStorage,
 	convertCollectionToArray,
+	deleteDocuments,
 	firestore
 } from '../../common/utils/firebase.utils';
 import {
@@ -67,11 +68,8 @@ export function* giveThingAsync(action) {
 			.collection('chats')
 			.where('thingId', '==', action.payload.thingId);
 		// TODO: Move to utils file
-		chatsToDelete.get().then(querySnapshot => {
-			querySnapshot.forEach(doc => {
-				doc.ref.delete();
-			});
-		});
+
+		deleteDocuments(chatsToDelete);
 
 		yield put(giveThingSuccess(action.payload.thingId));
 		yield put(changeModalVisibility(true, 'Enjoy Your Thing :-)'));

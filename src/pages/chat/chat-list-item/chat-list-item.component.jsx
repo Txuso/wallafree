@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { giveThingStart } from '../../../redux/thing/thing.actions';
 
-const ChatListItem = ({ chat, id, onClick, giveThingStart }) => {
+const ChatListItem = ({ chat, id, onClick, giveThingStart, userId }) => {
 	return (
 		<div onClick={() => onClick(id)} className="chat-list-container">
 			<img
@@ -19,13 +19,15 @@ const ChatListItem = ({ chat, id, onClick, giveThingStart }) => {
 				<h4>{chat.thingName}</h4>
 				<label>{chat.userName}</label>
 			</div>
-			<CustomButton
-				onClick={() => giveThingStart(chat.thingId, chat.userId)}
-				className="give-button"
-				secondary
-			>
-				Give
-			</CustomButton>
+			{userId === chat.userId ? (
+				<CustomButton
+					onClick={() => giveThingStart(chat.thingId, chat.userId)}
+					className="give-button"
+					secondary
+				>
+					Give
+				</CustomButton>
+			) : null}
 		</div>
 	);
 };

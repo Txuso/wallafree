@@ -52,6 +52,13 @@ export const getSingleCollection = async (collectionKey, id) => {
 	return await recordRef.data();
 };
 
+export const deleteDocuments = async collectionsToDelete => {
+	const collectionsSnapshot = await collectionsToDelete.get();
+	collectionsSnapshot.forEach(doc => {
+		doc.ref.delete();
+	});
+};
+
 export const updateDocuments = async (collectionKey, objectToUpdate) => {
 	const collectionRef = firestore.collection(collectionKey);
 	return await collectionRef.doc(objectToUpdate.id).update(objectToUpdate);

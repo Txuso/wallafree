@@ -33,6 +33,7 @@ const ChatList = ({ userId, history, chats, getChatsStart }) => {
 		<div className="chat-list">
 			{chats.map((chat, index) => (
 				<ChatListItem
+					userId={userId}
 					onClick={() => openChatConversation(chat.id)}
 					key={index}
 					chat={chat}
