@@ -5,22 +5,27 @@ import ThingMenuItem from '../thing-menu-item/thing-menu-item.component';
 import { connect } from 'react-redux';
 import { createChatStart } from '../../../redux/chat/chat.actions';
 import { selectCategory } from '../../../redux/thing/thing.selectors';
+import { selectCurrentUserId } from '../../../redux/user/user.selector';
 import { withRouter } from 'react-router-dom';
 
-const DiscoverCategory = ({ things, createChat, history }) => {
-	const onItemClick = id => {
-		createChat(id);
+const DiscoverCategory = ({ things, createChat, history, currentUserId }) => {
+	const onItemClick = thing => {
+		const { id, userId } = thing;
+
+		createChat(currentUserId, id, userId);
+
 		history.push('/chat');
 	};
 	return (
 		<div className="discover">
 			<section className="things-container">
 				{things.length > 0 ? (
-					things.map(thing => (
+					things.map((thing, i) => (
 						<ThingMenuItem
 							onClick={onItemClick}
-							key={thing.id}
+							key={i}
 							thing={thing}
+							currentUserId={currentUserId}
 						></ThingMenuItem>
 					))
 				) : (
@@ -32,11 +37,13 @@ const DiscoverCategory = ({ things, createChat, history }) => {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-	things: selectCategory(ownProps.match.params.categoryId)(state)
+	things: selectCategory(ownProps.match.params.categoryId)(state),
+	currentUserId: selectCurrentUserId(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-	createChat: id => dispatch(createChatStart(id))
+	createChat: (currentUserId, id, userId) =>
+		dispatch(createChatStart(currentUserId, id, userId))
 });
 
 export default withRouter(

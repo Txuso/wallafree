@@ -1,4 +1,5 @@
 import ChatActionsTypes from './chat.types';
+import ThingActionsTypes from '../thing/thing.types';
 
 const INITIAL_STATE = {
 	chats: [],
@@ -39,7 +40,9 @@ const chatReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				isLoading: false,
-				messages: action.payload.messages.sort((a, b) => a.timestamp - b.timestamp)
+				messages: action.payload.messages.sort(
+					(a, b) => a.timestamp - b.timestamp
+				)
 			};
 		}
 		case ChatActionsTypes.GET_CHAT_MESSAGES_FAILURE: {
@@ -59,7 +62,7 @@ const chatReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				isLoading: false,
-				chats: [ ...state.chats, action.payload.chat ]
+				chats: [...state.chats, action.payload.chat]
 			};
 		}
 
@@ -68,6 +71,17 @@ const chatReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				isLoading: false,
 				errorMessage: action.payload.error
+			};
+		}
+
+		case ThingActionsTypes.GIVE_THING_SUCCESS: {
+			const filteredChats = state.chats.filter(
+				chat => chat.thingId === action.payload.thingId
+			);
+
+			return {
+				...state,
+				chats: filteredChats
 			};
 		}
 		default:

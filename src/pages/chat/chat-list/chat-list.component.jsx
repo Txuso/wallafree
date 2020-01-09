@@ -37,7 +37,7 @@ const ChatList = ({ userId, history, chats, getChatsStart }) => {
 					key={index}
 					chat={chat}
 				/>
-			))}{' '}
+			))}
 		</div>
 	);
 };

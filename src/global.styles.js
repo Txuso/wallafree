@@ -28,4 +28,26 @@ export const GlobalStyle = createGlobalStyle`
 
 	}
 
+	.modal-content {
+		color: white;
+		background-color: var(--primary);
+		text-align: center;
+		min-height: 15rem;
+		border: unset;
+		
+		.modal-header {
+			border-bottom: unset;
+
+		}
+		.modal-footer {
+			border-top: unset;
+			justify-content: center;
+		}
+		.modal-logo {
+			margin: 0 auto;
+			width: 170px;
+		}
+	
+	}
+
 `;

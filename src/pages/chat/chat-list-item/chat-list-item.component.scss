@@ -1,15 +1,23 @@
-.message-container {
+.chat-list-container {
 	width: 100%;
 	height: auto;
 	position: sticky;
 	bottom: 0;
 	flex-shrink: 0;
-	padding: 12px 20px;
+	padding: 12px 0;
 	background: white;
 	display: flex;
+	align-items: center;
 	cursor: pointer;
 
 	.item-description-wrapper {
 		margin-left: 2rem;
+	}
+
+	.give-button {
+		width: 5rem;
+		min-width: unset;
+		margin-left: auto;
+		margin-right: 0;
 	}
 }

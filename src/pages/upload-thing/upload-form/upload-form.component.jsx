@@ -16,7 +16,8 @@ const UploadForm = ({ addThing, userId }) => {
 		description: '',
 		imageUrl: null,
 		categoryId: 'clothes',
-		userId: userId
+		userId: userId,
+		status: 'active'
 	});
 
 	const { name, description, categoryId, imageUrl } = thingInfo;

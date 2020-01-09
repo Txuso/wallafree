@@ -13,11 +13,12 @@ const buttonStyles = css`
 `;
 
 const secondaryButtonStyles = css`
-	background-color: var(--grey);
+	background-color: var(--secondary);
 	color: white;
 	border: none;
 	border-radius: 5px;
 	transition: 0.2s ease-in-out, padding;
+	width: 5rem;
 
 	&:hover {
 		transform: scale(1.05);
@@ -28,7 +29,6 @@ const googleSignInStyles = css`
 	background-color: white;
 	color: var(--primary);
 	border: solid 1px var(--primary);
-	border-radius: 5px;
 
 	transition: 0.2s ease-in-out, padding;
 

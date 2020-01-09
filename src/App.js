@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import {
 	checkUserSession,
@@ -13,10 +13,13 @@ import {
 
 import Alert from 'react-bootstrap/Alert';
 import ChatPage from './pages/chat/chat.component';
+import { CustomButton } from './common/components';
 import DiscoverPage from './pages/discover/discover.component';
 import { GlobalStyle } from './global.styles';
 import Header from './common/components/header/header.component';
 import HomePage from './pages/homepage/homepage.component';
+import Logo from './assets/wallafree.png';
+import Modal from 'react-bootstrap/Modal';
 import MyProfilePage from './pages/myprofile/myprofile.component';
 import SignInSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.component';
 import UploadThingContainer from './pages/upload-thing/upload-thing.container';
@@ -34,6 +37,10 @@ const App = ({
 	useEffect(() => {
 		checkUserSession();
 	}, [checkUserSession]);
+
+	const [show, setShow] = useState(true);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 
 	return (
 		<div>
@@ -114,6 +121,18 @@ const App = ({
 					? error.message
 					: 'Somethin Wrong Happened. Try Again Later'}
 			</Alert>
+
+			<Modal show={show} onHide={handleClose} centered>
+				<Modal.Body>
+					<h3>Enjoy Your Thing :-)</h3>
+					<img src={Logo} className="modal-logo" alt="" />
+				</Modal.Body>
+				<Modal.Footer>
+					<CustomButton secondary onClick={handleClose}>
+						Close
+					</CustomButton>
+				</Modal.Footer>
+			</Modal>
 		</div>
 	);
 };

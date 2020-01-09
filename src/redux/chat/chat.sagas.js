@@ -53,7 +53,9 @@ export function* fetchMyChatsAsync(action) {
 				id: item.id,
 				imageUrl: thingInfo.imageUrl,
 				thingName: thingInfo.name,
-				userName: userInfo.displayName
+				userName: userInfo.displayName,
+				userId: item.userId,
+				thingId: item.thingId
 			});
 		}
 

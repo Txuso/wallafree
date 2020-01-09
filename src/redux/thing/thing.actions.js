@@ -9,6 +9,21 @@ export const getThingsSuccess = things => ({
 	payload: { things: things }
 });
 
+export const giveThingStart = (thingId, userId) => ({
+	type: ThingActionsTypes.GIVE_THING,
+	payload: { thingId: thingId, userId: userId }
+});
+
+export const giveThingSuccess = (thingId, userId) => ({
+	type: ThingActionsTypes.GIVE_THING_SUCCESS,
+	payload: { thingId: thingId }
+});
+
+export const giveThingsFailure = error => ({
+	type: ThingActionsTypes.GIVE_THING_FAILURE,
+	payload: { error: error }
+});
+
 export const getThingsFailure = error => ({
 	type: ThingActionsTypes.GET_THINGS_FAILURE,
 	payload: { error: error }

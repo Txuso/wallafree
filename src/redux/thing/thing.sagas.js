@@ -8,7 +8,9 @@ import {
 	addThingFailure,
 	addThingSuccess,
 	getThingsFailure,
-	getThingsSuccess
+	getThingsSuccess,
+	giveThingSuccess,
+	giveThingsFailure
 } from './thing.actions';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
@@ -16,7 +18,10 @@ import ThingActionsTypes from './thing.types';
 
 export function* fetchThingsAsync() {
 	try {
-		const collectionRef = yield firestore.collection('things').get();
+		const collectionRef = yield firestore
+			.collection('things')
+			.where('status', '==', 'active')
+			.get();
 
 		const convertedCollectionArray = convertCollectionToArray(
 			collectionRef
@@ -43,6 +48,36 @@ export function* addThingAsync(action) {
 		yield put(addThingFailure(error.message));
 	}
 }
+
+export function* giveThingAsync(action) {
+	try {
+		yield call(addCollectionAndDocuments, 'deals', [
+			{ ...action.payload, timestamp: new Date().getTime() }
+		]);
+		console.log('aaaaaa', action.payload.thingId);
+
+		yield firestore
+			.collection('things')
+			.doc(action.payload.thingId)
+			.update({
+				status: 'inactive'
+			});
+
+		const chatsToDelete = yield firestore
+			.collection('chats')
+			.where('thingId', '==', action.payload.thingId);
+
+		chatsToDelete.get().then(querySnapshot => {
+			querySnapshot.forEach(doc => {
+				doc.ref.delete();
+			});
+		});
+
+		yield put(giveThingSuccess());
+	} catch (error) {
+		yield put(giveThingsFailure(error.message));
+	}
+}
 export function* getThingsCollectionsStart() {
 	yield takeLatest(ThingActionsTypes.GET_THINGS, fetchThingsAsync);
 }
@@ -51,6 +86,13 @@ export function* addThingStart() {
 	yield takeLatest(ThingActionsTypes.ADD_THING, addThingAsync);
 }
 
+export function* giveThingStart() {
+	yield takeLatest(ThingActionsTypes.GIVE_THING, giveThingAsync);
+}
 export function* thingSagas() {
-	yield all([call(getThingsCollectionsStart), call(addThingStart)]);
+	yield all([
+		call(getThingsCollectionsStart),
+		call(addThingStart),
+		call(giveThingStart)
+	]);
 }
