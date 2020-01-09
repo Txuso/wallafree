@@ -1,3 +1,4 @@
+import appReducer from './app/app.reducer';
 import categoryReducer from './categories/categories.reducer';
 import chatReducer from './chat/chat.reducer';
 import { combineReducers } from 'redux';
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
 	user: userReducer,
 	category: categoryReducer,
 	thing: thingReducer,
-	chat: chatReducer
+	chat: chatReducer,
+	app: appReducer
 });
 export default persistReducer(persistConfig, rootReducer);

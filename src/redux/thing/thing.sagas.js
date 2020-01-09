@@ -15,6 +15,7 @@ import {
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import ThingActionsTypes from './thing.types';
+import { changeModalVisibility } from '../app/app.actions';
 
 export function* fetchThingsAsync() {
 	try {
@@ -54,7 +55,6 @@ export function* giveThingAsync(action) {
 		yield call(addCollectionAndDocuments, 'deals', [
 			{ ...action.payload, timestamp: new Date().getTime() }
 		]);
-		console.log('aaaaaa', action.payload.thingId);
 
 		yield firestore
 			.collection('things')
@@ -66,14 +66,15 @@ export function* giveThingAsync(action) {
 		const chatsToDelete = yield firestore
 			.collection('chats')
 			.where('thingId', '==', action.payload.thingId);
-
+		// TODO: Move to utils file
 		chatsToDelete.get().then(querySnapshot => {
 			querySnapshot.forEach(doc => {
 				doc.ref.delete();
 			});
 		});
 
-		yield put(giveThingSuccess());
+		yield put(giveThingSuccess(action.payload.thingId));
+		yield put(changeModalVisibility(true, 'Enjoy Your Thing :-)'));
 	} catch (error) {
 		yield put(giveThingsFailure(error.message));
 	}

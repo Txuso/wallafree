@@ -76,12 +76,13 @@ const chatReducer = (state = INITIAL_STATE, action) => {
 
 		case ThingActionsTypes.GIVE_THING_SUCCESS: {
 			const filteredChats = state.chats.filter(
-				chat => chat.thingId === action.payload.thingId
+				chat => chat.thingId !== action.payload.thingId
 			);
 
 			return {
 				...state,
-				chats: filteredChats
+				chats: filteredChats,
+				messages: []
 			};
 		}
 		default:

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import {
 	checkUserSession,
@@ -10,6 +10,7 @@ import {
 	selectInfoMessage,
 	selectLoginError
 } from './redux/user/user.selector';
+import { selectIsModalShown, selectModalText } from './redux/app/app.selectors';
 
 import Alert from 'react-bootstrap/Alert';
 import ChatPage from './pages/chat/chat.component';
@@ -23,6 +24,7 @@ import Modal from 'react-bootstrap/Modal';
 import MyProfilePage from './pages/myprofile/myprofile.component';
 import SignInSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.component';
 import UploadThingContainer from './pages/upload-thing/upload-thing.container';
+import { changeModalVisibility } from './redux/app/app.actions';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
@@ -32,15 +34,18 @@ const App = ({
 	error,
 	info,
 	resetInfo,
-	resetError
+	resetError,
+	isModalShown,
+	modalMessage,
+	resetModalState
 }) => {
 	useEffect(() => {
 		checkUserSession();
 	}, [checkUserSession]);
 
-	const [show, setShow] = useState(true);
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const handleClose = () => {
+		resetModalState(false, '');
+	};
 
 	return (
 		<div>
@@ -119,12 +124,11 @@ const App = ({
 				Error:{' '}
 				{error
 					? error.message
-					: 'Somethin Wrong Happened. Try Again Later'}
+					: 'Something Wrong Happened. Try Again Later'}
 			</Alert>
-
-			<Modal show={show} onHide={handleClose} centered>
+			<Modal show={isModalShown} onHide={handleClose} centered>
 				<Modal.Body>
-					<h3>Enjoy Your Thing :-)</h3>
+					<h3>{modalMessage}</h3>
 					<img src={Logo} className="modal-logo" alt="" />
 				</Modal.Body>
 				<Modal.Footer>
@@ -140,11 +144,15 @@ const App = ({
 const mapStateToProps = createStructuredSelector({
 	currentUser: selectCurrentUser,
 	error: selectLoginError,
-	info: selectInfoMessage
+	info: selectInfoMessage,
+	isModalShown: selectIsModalShown,
+	modalMessage: selectModalText
 });
 const mapDispatchToProps = dispatch => ({
 	checkUserSession: user => dispatch(checkUserSession()),
 	resetError: () => dispatch(resetError()),
-	resetInfo: () => dispatch(resetInfo())
+	resetInfo: () => dispatch(resetInfo()),
+	resetModalState: (isModalShown, modalMessage) =>
+		dispatch(changeModalVisibility(isModalShown, modalMessage))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(App);

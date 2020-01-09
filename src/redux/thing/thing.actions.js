@@ -14,7 +14,7 @@ export const giveThingStart = (thingId, userId) => ({
 	payload: { thingId: thingId, userId: userId }
 });
 
-export const giveThingSuccess = (thingId, userId) => ({
+export const giveThingSuccess = thingId => ({
 	type: ThingActionsTypes.GIVE_THING_SUCCESS,
 	payload: { thingId: thingId }
 });
