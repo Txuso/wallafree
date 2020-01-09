@@ -72,7 +72,12 @@ export function* giveThingAsync(action) {
 		deleteDocuments(chatsToDelete);
 
 		yield put(giveThingSuccess(action.payload.thingId));
-		yield put(changeModalVisibility(true, 'Enjoy Your Thing :-)'));
+		yield put(
+			changeModalVisibility(
+				true,
+				'Thanks for giving away your thing. Keep it up :-)'
+			)
+		);
 	} catch (error) {
 		yield put(giveThingsFailure(error.message));
 	}
