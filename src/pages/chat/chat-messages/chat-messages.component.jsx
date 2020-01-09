@@ -1,13 +1,8 @@
 import './chat-messages.component.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
-import {
-	getChatMessages,
-	getChatsStart,
-	sendMessage
-} from '../../../redux/chat/chat.actions';
+import { getChatMessages, sendMessage } from '../../../redux/chat/chat.actions';
 
-import { FormTextArea } from '../../../common/components/form-textarea/form-textarea.component';
 import Message from '../message/message.component';
 import MessageContainer from '../message-container/message-container.component';
 import { connect } from 'react-redux';
@@ -30,7 +25,9 @@ const ChatMessages = ({
 	}, [getChatsStart, match.params.chatId]);
 
 	const scrollToBottom = () => {
-		messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+		if (messagesEndRef && messagesEndRef.current) {
+			messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+		}
 	};
 
 	useEffect(scrollToBottom, [messages]);
@@ -54,9 +51,9 @@ const ChatMessages = ({
 	};
 
 	return (
-		<div className="chat">
+		<div className="chat-messages-wrapper">
 			{messages && messages.length > 0 ? (
-				<div>
+				<div className="messages-wrapper">
 					{messages.map((message, index) => (
 						<Message
 							key={index}
@@ -70,13 +67,14 @@ const ChatMessages = ({
 							})}
 						></Message>
 					))}
+					<div className="container empty" ref={messagesEndRef} />
 				</div>
 			) : null}
-			<div ref={messagesEndRef} />
 
 			<MessageContainer
 				onKeyPress={onKeyPress}
 				handleChange={handleChange}
+				placeholder={'Write a message...'}
 				value={messageInfo}
 			/>
 		</div>

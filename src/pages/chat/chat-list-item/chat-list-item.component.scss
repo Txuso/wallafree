@@ -6,5 +6,10 @@
 	flex-shrink: 0;
 	padding: 12px 20px;
 	background: white;
+	display: flex;
 	cursor: pointer;
+
+	.item-description-wrapper {
+		margin-left: 2rem;
+	}
 }

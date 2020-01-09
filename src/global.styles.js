@@ -19,4 +19,13 @@ export const GlobalStyle = createGlobalStyle`
 		box-sizing: border-box;
 	}
 
+	.avatar-rounded {
+		background-size: cover;
+		border-radius: 50%;
+		background-position: center;
+		height: 100px;
+		width: 100px;
+
+	}
+
 `;

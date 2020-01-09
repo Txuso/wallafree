@@ -1,4 +1,13 @@
-.chat {
+.chat-messages-wrapper {
 	height: 80%;
-	width: 100%;
+	width: 90%;
+
+	.messages-wrapper {
+		overflow-y: scroll;
+	}
+
+	.messages-end-ref {
+		position: absolute;
+		bottom: 0;
+	}
 }

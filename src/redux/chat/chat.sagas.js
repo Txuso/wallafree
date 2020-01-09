@@ -1,7 +1,8 @@
 import {
 	addCollectionAndDocuments,
 	convertCollectionToArray,
-	firestore
+	firestore,
+	getSingleCollection
 } from '../../common/utils/firebase.utils';
 import { all, call, put, take, takeLatest } from 'redux-saga/effects';
 import {
@@ -35,12 +36,28 @@ export function* fetchMyChatsAsync(action) {
 		const convertedCollectionArray2 = convertCollectionToArray(
 			collectionRef2
 		);
-
-		yield put(
-			getChatsSuccess(
-				convertedCollectionArray.concat(convertedCollectionArray2)
-			)
+		const unifiedCollection = convertedCollectionArray.concat(
+			convertedCollectionArray2
 		);
+
+		const chatCollections = [];
+		for (var item of unifiedCollection) {
+			const userIdToShow =
+				localStorage.getItem('userId') === item.userId
+					? item.requestUserId
+					: item.userId;
+			const userInfo = yield getSingleCollection('users', userIdToShow);
+			const thingInfo = yield getSingleCollection('things', item.thingId);
+
+			chatCollections.push({
+				id: item.id,
+				imageUrl: thingInfo.imageUrl,
+				thingName: thingInfo.name,
+				userName: userInfo.displayName
+			});
+		}
+
+		yield put(getChatsSuccess(chatCollections));
 	} catch (error) {
 		yield put(getChatsFailure(error.message));
 	}
@@ -101,7 +118,7 @@ export function* sendMessageAsync(action) {
 	}
 }
 
-function* syncUsers() {
+function* fetchChatChannelListener() {
 	// #1
 	const channel = new eventChannel(emitter => {
 		const listeners = [];
@@ -174,6 +191,6 @@ export function* chatSagas() {
 		call(addChatStart),
 		call(sendMessageStart),
 		call(getMyChatMessagesCollectionsStart),
-		call(syncUsers)
+		call(fetchChatChannelListener)
 	]);
 }

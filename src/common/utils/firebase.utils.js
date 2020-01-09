@@ -46,6 +46,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 	}
 };
 
+export const getSingleCollection = async (collectionKey, id) => {
+	const recordRef = await firestore.doc(`${collectionKey}/${id}`).get();
+
+	return await recordRef.data();
+};
+
 export const updateDocuments = async (collectionKey, objectToUpdate) => {
 	const collectionRef = firestore.collection(collectionKey);
 	return await collectionRef.doc(objectToUpdate.id).update(objectToUpdate);
