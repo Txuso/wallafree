@@ -43,8 +43,6 @@ const UploadForm = ({ addThing, userId }) => {
 			};
 			reader.readAsDataURL(files[0]);
 		}
-
-		// the result image data
 	};
 
 	return (

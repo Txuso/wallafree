@@ -2,12 +2,16 @@ import './chat-messages.component.scss';
 
 import React, { useEffect, useRef, useState } from 'react';
 import { getChatMessages, sendMessage } from '../../../redux/chat/chat.actions';
+import {
+	selectAllChatMessages,
+	selectCurrentChatMessages
+} from '../../../redux/chat/chat.selectors';
 
+import Logo from '../../../assets/wallafree.png';
 import Message from '../message/message.component';
 import MessageContainer from '../message-container/message-container.component';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectCurrentChatMessages } from '../../../redux/chat/chat.selectors';
 import { selectCurrentUserId } from '../../../redux/user/user.selector';
 import { withRouter } from 'react-router-dom';
 
@@ -16,7 +20,8 @@ const ChatMessages = ({
 	userId,
 	match,
 	messages,
-	getChatsStart
+	getChatsStart,
+	chats
 }) => {
 	const messagesEndRef = useRef(null);
 
@@ -70,20 +75,27 @@ const ChatMessages = ({
 					<div className="container empty" ref={messagesEndRef} />
 				</div>
 			) : null}
-
-			<MessageContainer
-				onKeyPress={onKeyPress}
-				handleChange={handleChange}
-				placeholder={'Write a message...'}
-				value={messageInfo}
-			/>
+			{chats.length > 0 ? (
+				<MessageContainer
+					onKeyPress={onKeyPress}
+					handleChange={handleChange}
+					placeholder={'Write a message...'}
+					value={messageInfo}
+				/>
+			) : (
+				<div className="empty-cha">
+					<h3>Ooops! No Conversation Available Yet</h3>
+					<img src={Logo} className="modal-logo" alt="" />
+				</div>
+			)}
 		</div>
 	);
 };
 
 const mapStateToProps = createStructuredSelector({
 	userId: selectCurrentUserId,
-	messages: selectCurrentChatMessages
+	messages: selectCurrentChatMessages,
+	chats: selectAllChatMessages
 });
 
 const mapDispatchToProps = dispatch => ({

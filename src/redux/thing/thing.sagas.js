@@ -67,10 +67,8 @@ export function* giveThingAsync(action) {
 		const chatsToDelete = yield firestore
 			.collection('chats')
 			.where('thingId', '==', action.payload.thingId);
-		// TODO: Move to utils file
 
 		deleteDocuments(chatsToDelete);
-
 		yield put(giveThingSuccess(action.payload.thingId));
 		yield put(changeModalVisibility(true, 'Enjoy Your Thing :-)'));
 	} catch (error) {
