@@ -78,11 +78,17 @@ const UploadForm = ({ addThing, userId }) => {
 						label="Category"
 						value={categoryId}
 						options={[
-							{ value: '1', label: 'Clothes' },
-							{ value: '2', label: 'Cinema, Books & Music' },
-							{ value: '3', label: 'home and garden' },
-							{ value: '4', label: 'Electronic Devices' },
-							{ value: '5', label: 'Sports' }
+							{ value: 'clothes', label: 'Clothes' },
+							{
+								value: 'cinema-books-music',
+								label: 'Cinema, Books & Music'
+							},
+							{ value: 'home-garden', label: 'home and garden' },
+							{
+								value: 'electronic',
+								label: 'Electronic Devices'
+							},
+							{ value: 'sports', label: 'Sports' }
 						]}
 						handleChange={handleChange}
 						required
