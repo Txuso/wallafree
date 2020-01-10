@@ -83,7 +83,7 @@ const ChatMessages = ({
 					value={messageInfo}
 				/>
 			) : (
-				<div className="empty-cha">
+				<div className="empty-chat">
 					<h3>Ooops! No Conversation Available Yet</h3>
 					<img src={Logo} className="modal-logo" alt="" />
 				</div>

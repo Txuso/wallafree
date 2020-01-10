@@ -6,4 +6,8 @@
 	flex-shrink: 0;
 	padding: 12px 20px;
 	background: white;
+
+	@media screen and (max-width: 800px) {
+		padding: 12px;
+	}
 }
