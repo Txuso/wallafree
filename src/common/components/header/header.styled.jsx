@@ -13,7 +13,13 @@ export const HeaderContainer = styled.div`
 	@media screen and (max-width: 800px) {
 		height: 60px;
 		padding: 10px;
-		margin-bottom: 20px;
+	}
+
+	@media screen and (max-width: 500px) {
+		height: 60px;
+		padding: 10px;
+		flex-direction: column;
+		margin-bottom: 50px;
 	}
 `;
 
@@ -32,6 +38,7 @@ export const LogoContainer = styled(Link)`
 	@media screen and (max-width: 800px) {
 		width: 50px;
 		padding: 0;
+		margin-bottom: 0.5rem;
 		.logo {
 			width: 70px;
 		}
@@ -46,7 +53,7 @@ export const OptionsContainer = styled.div`
 	justify-content: flex-end;
 
 	@media screen and (max-width: 800px) {
-		width: 80%;
+		width: 100%;
 	}
 
 	.thing {
@@ -61,6 +68,12 @@ export const OptionsContainer = styled.div`
 			padding: 4px;
 		}
 
+		@media screen and (max-width: 500px) {
+			position: fixed;
+			bottom: 2rem;
+			width: 6rem;
+			z-index: 1000;
+		}
 		&:hover {
 			transform: scale(1.05);
 			color: white;

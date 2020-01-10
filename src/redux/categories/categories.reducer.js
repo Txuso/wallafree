@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 			linkUrl: 'discover/clothes'
 		},
 		{
-			title: 'Cinema, Books & Music',
+			title: 'Entertainment',
 			imageUrl:
 				'https://media.istockphoto.com/photos/old-school-music-is-the-best-music-picture-id1184929267?k=6&m=1184929267&s=612x612&w=0&h=wIhiHQTuwmSj61Xvui00VNlarw-Xm7XdZP5fEL6lk1E=',
 

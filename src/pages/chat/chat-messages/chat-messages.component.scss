@@ -1,6 +1,9 @@
 .chat-messages-wrapper {
 	height: 80%;
 	width: 90%;
+	@media screen and (max-width: 800px) {
+		width: 100%;
+	}
 
 	.messages-wrapper {
 		overflow-y: scroll;
