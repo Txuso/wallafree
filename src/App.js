@@ -1,16 +1,9 @@
 import React, { useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import {
-	checkUserSession,
-	resetError,
-	resetInfo
-} from './redux/user/user.actions';
-import {
-	selectCurrentUser,
-	selectInfoMessage,
-	selectLoginError
-} from './redux/user/user.selector';
-import { selectIsModalShown, selectModalText } from './redux/app/app.selectors';
+import { changeModalVisibility, resetAletInfo } from './redux/app/app.actions';
+import { checkUserSession, resetError } from './redux/user/user.actions';
+import { selectAlertInfo, selectIsModalShown, selectModalText } from './redux/app/app.selectors';
+import { selectCurrentUser, selectLoginError } from './redux/user/user.selector';
 
 import Alert from 'react-bootstrap/Alert';
 import ChatPage from './pages/chat/chat.component';
@@ -24,7 +17,6 @@ import Modal from 'react-bootstrap/Modal';
 import MyProfilePage from './pages/myprofile/myprofile.component';
 import SignInSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.component';
 import UploadThingContainer from './pages/upload-thing/upload-thing.container';
-import { changeModalVisibility } from './redux/app/app.actions';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
@@ -32,16 +24,19 @@ const App = ({
 	checkUserSession,
 	currentUser,
 	error,
-	info,
-	resetInfo,
+	resetAletInfo,
 	resetError,
 	isModalShown,
 	modalMessage,
-	resetModalState
+	resetModalState,
+	alertInfo
 }) => {
-	useEffect(() => {
-		checkUserSession();
-	}, [checkUserSession]);
+	useEffect(
+		() => {
+			checkUserSession();
+		},
+		[ checkUserSession ]
+	);
 
 	const handleClose = () => {
 		resetModalState(false, '');
@@ -57,74 +52,31 @@ const App = ({
 				<Route
 					exact
 					path="/chat"
-					render={() =>
-						currentUser.userId !== '' ? (
-							<ChatPage />
-						) : (
-							<Redirect to="/signin" />
-						)
-					}
+					render={() => (currentUser.userId !== '' ? <ChatPage /> : <Redirect to="/signin" />)}
 				/>
 				<Route
 					path="/chat/:chatId"
-					render={() =>
-						currentUser.userId !== '' ? (
-							<ChatPage />
-						) : (
-							<Redirect to="/signin" />
-						)
-					}
+					render={() => (currentUser.userId !== '' ? <ChatPage /> : <Redirect to="/signin" />)}
 				/>
 				<Route
 					path="/profile"
-					render={() =>
-						currentUser.userId !== '' ? (
-							<MyProfilePage />
-						) : (
-							<Redirect to="/signin" />
-						)
-					}
+					render={() => (currentUser.userId !== '' ? <MyProfilePage /> : <Redirect to="/signin" />)}
 				/>
 				<Route
 					exact
 					path="/signin"
-					render={() =>
-						currentUser.userId !== '' ? (
-							<Redirect to="/" />
-						) : (
-							<SignInSignUpPage />
-						)
-					}
+					render={() => (currentUser.userId !== '' ? <Redirect to="/" /> : <SignInSignUpPage />)}
 				/>
 				<Route
 					path="/upload"
-					render={() =>
-						currentUser.userId !== '' ? (
-							<UploadThingContainer />
-						) : (
-							<Redirect to="/signin" />
-						)
-					}
+					render={() => (currentUser.userId !== '' ? <UploadThingContainer /> : <Redirect to="/signin" />)}
 				/>
 			</Switch>
-			<Alert
-				show={info}
-				onClose={() => resetInfo()}
-				dismissible
-				variant={'success'}
-			>
-				Info: {info ? info : ''}
+			<Alert show={alertInfo} onClose={() => resetAletInfo()} dismissible variant={'success'}>
+				Info: {alertInfo ? alertInfo : ''}
 			</Alert>
-			<Alert
-				show={error}
-				onClose={() => resetError()}
-				dismissible
-				variant={'danger'}
-			>
-				Error:{' '}
-				{error
-					? error.message
-					: 'Something Wrong Happened. Try Again Later'}
+			<Alert show={error} onClose={() => resetError()} dismissible variant={'danger'}>
+				Error: {error ? error.message : 'Something Wrong Happened. Try Again Later'}
 			</Alert>
 			<Modal show={isModalShown} onHide={handleClose} centered>
 				<Modal.Body>
@@ -144,15 +96,14 @@ const App = ({
 const mapStateToProps = createStructuredSelector({
 	currentUser: selectCurrentUser,
 	error: selectLoginError,
-	info: selectInfoMessage,
 	isModalShown: selectIsModalShown,
-	modalMessage: selectModalText
+	modalMessage: selectModalText,
+	alertInfo: selectAlertInfo
 });
-const mapDispatchToProps = dispatch => ({
-	checkUserSession: user => dispatch(checkUserSession()),
+const mapDispatchToProps = (dispatch) => ({
+	checkUserSession: (user) => dispatch(checkUserSession()),
 	resetError: () => dispatch(resetError()),
-	resetInfo: () => dispatch(resetInfo()),
-	resetModalState: (isModalShown, modalMessage) =>
-		dispatch(changeModalVisibility(isModalShown, modalMessage))
+	resetAletInfo: () => dispatch(resetAletInfo()),
+	resetModalState: (isModalShown, modalMessage) => dispatch(changeModalVisibility(isModalShown, modalMessage))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(App);

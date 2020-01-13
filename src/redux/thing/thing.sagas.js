@@ -44,7 +44,7 @@ export function* addThingAsync(action) {
 
 		action.payload.thing.imageUrl = generatedImageUrl;
 		yield call(addCollectionAndDocuments, 'things', [ action.payload.thing ]);
-		yield put(addThingSuccess(action.payload.thing));
+		yield put(addThingSuccess(action.payload.thing, 'Nice! Your thing has been added'));
 	} catch (error) {
 		yield put(addThingFailure(error.message));
 	}
