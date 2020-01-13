@@ -8,8 +8,7 @@ const INITIAL_STATE = {
 		userId: '',
 		email: ''
 	},
-	error: null,
-	info: null
+	error: null
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -18,8 +17,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				currentUser: action.payload.user,
-				error: null,
-				info: action.payload.info
+				error: null
 			};
 		case UserActionTypes.SING_IN_SUCCESS:
 			return {
@@ -41,17 +39,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
 				...state,
 				error: action.payload.error
 			};
-		case UserActionTypes.RESET_ERROR:
-			return {
-				...state,
-				error: null
-			};
 
-		case UserActionTypes.RESET_INFO:
-			return {
-				...state,
-				info: null
-			};
 		default:
 			return state;
 	}
