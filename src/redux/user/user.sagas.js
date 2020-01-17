@@ -1,9 +1,7 @@
 import {
-	addCollectionAndDocuments,
 	addFilesToStorage,
 	auth,
 	createUserProfileDocument,
-	firestore,
 	getCurrentUser,
 	googleProvider,
 	updateDocuments
@@ -24,16 +22,10 @@ import UserActionTypes from './user.types';
 
 export function* getSnapshotFromUserAuth(userAuth, additionalData) {
 	try {
-		const userRef = yield call(
-			createUserProfileDocument,
-			userAuth,
-			additionalData
-		);
+		const userRef = yield call(createUserProfileDocument, userAuth, additionalData);
 		const userSnapshot = yield userRef.get();
 		localStorage.setItem('userId', userSnapshot.id);
-		yield put(
-			signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() })
-		);
+		yield put(signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
 	} catch (error) {
 		yield put(signInFailure(error));
 	}
@@ -93,10 +85,7 @@ export function* onSignOutStart() {
 
 export function* signUp({ payload: { email, password, displayName } }) {
 	try {
-		const { user } = yield auth.createUserWithEmailAndPassword(
-			email,
-			password
-		);
+		const { user } = yield auth.createUserWithEmailAndPassword(email, password);
 		yield put(signUpSuccess({ user, additionalData: { displayName } }));
 	} catch (error) {
 		yield put(signUpFailure(error));
@@ -117,8 +106,7 @@ export function* onSignUpSuccess() {
 
 export function* updateCurrentUserInfo(action) {
 	try {
-		const imageToProcess =
-			action.payload.user && action.payload.user.newImagzeToProcess;
+		const imageToProcess = action.payload.user && action.payload.user.newImagzeToProcess;
 
 		const { user } = action.payload;
 
@@ -140,10 +128,7 @@ export function* updateCurrentUserInfo(action) {
 }
 
 export function* onUpdateUserInfo() {
-	yield takeLatest(
-		UserActionTypes.UPDATE_CURRENT_USER_INFO,
-		updateCurrentUserInfo
-	);
+	yield takeLatest(UserActionTypes.UPDATE_CURRENT_USER_INFO, updateCurrentUserInfo);
 }
 
 export function* userSagas() {
