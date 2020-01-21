@@ -1,27 +1,24 @@
-# React Example
 
-This directory is a brief example of a [React](https://reactjs.org/) app with [Serverless Functions](https://zeit.co/docs/v2/serverless-functions/introduction) that can be deployed with ZEIT Now and zero configuration.
+### Why Wallafree?
 
-## Deploy Your Own
+[Wallafree] (https://wallafree.josutxuso.now.sh/) is a POC in order to test the latest concepts about React JS and apply them in a real project. This responssive app offers a marketplace where people can give away things they don't need so that other people can use them. Sharing is caring :-)
 
-Deploy your own React project, along with Serverless Functions, with ZEIT Now.
 
-[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/new/project?template=https://github.com/zeit/now-examples/tree/master/create-react-app-functions)
+## Zeit NOW CI/CD
 
-*Live Example: https://create-react-app-functions.now-examples.now.sh/*
+Zeit NOW has been used as a CI/CD platform. More information [here](https://zeit.co)
 
-### How We Created This Example
+## Used Technologies
 
-To get started with React, along with [Serverless Functions](https://zeit.co/docs/v2/serverless-functions/introduction), with ZEIT Now, you can use the [Create-React-App CLI](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) to initialize the project:
+- React JS
+- Redux
+- sass
+- Styled Components
+- Firebase (Firestore, Authentication and Storage)
 
-```shell
-$ npx create-react-app my-app
-```
+## React Related Features
 
-### Deploying From Your Terminal
+- Higher-order components
+- React Hooks
+- Container/component approach
 
-You can deploy your new React project, along with [Serverless Functions](https://zeit.co/docs/v2/serverless-functions/introduction), with a single command from your terminal using [Now CLI](/download):
-
-```shell
-$ now
-```
